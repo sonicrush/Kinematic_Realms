@@ -1,16 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class DragAndScroll : MonoBehaviour
 {
-    [SerializeField] private InputAction press, screenPos;
+    // Reference to the generated InputActions class (replace BallInputActions with your generated class name if different)
+    private Ball.Ball_Input_Actions inputActions;
 
     private Vector3 curScreenPos;
-
-    Camera camera;
+    private Camera camera;
     private bool isDragging;
+
+    [SerializeField] private float scrollSpeed = 5f;
+    [SerializeField] private float altScrollSpeed = 3f;
 
     private Vector3 WorldPos
     {
@@ -20,17 +22,16 @@ public class DragAndScroll : MonoBehaviour
             return camera.ScreenToWorldPoint(curScreenPos + new Vector3(0, 0, z));
         }
     }
+
     private bool isClickedOn
     {
         get
         {
             Ray ray = camera.ScreenPointToRay(curScreenPos);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 return hit.transform == transform;
             }
-
             return false;
         }
     }
@@ -38,11 +39,53 @@ public class DragAndScroll : MonoBehaviour
     private void Awake()
     {
         camera = Camera.main;
-        screenPos.Enable();
-        press.Enable();
-        screenPos.performed += context => { curScreenPos = context.ReadValue<Vector2>(); };
-        press.performed += _ => { if (isClickedOn) StartCoroutine(Drag()); };
-        press.canceled += _ => { isDragging = false; };
+
+        // Initialize input actions
+        inputActions = new Ball.Ball_Input_Actions();
+
+        // Enable actions
+        inputActions.Ball.Enable();
+
+        // Update screenPos whenever performed
+        inputActions.Ball.screenPos.performed += ctx =>
+        {
+            curScreenPos = ctx.ReadValue<Vector2>();
+        };
+
+        // Start drag on press performed if clicked on object
+        inputActions.Ball.press.performed += _ =>
+        {
+            if (isClickedOn) StartCoroutine(Drag());
+        };
+
+        // Stop dragging on press canceled
+        inputActions.Ball.press.canceled += _ => { isDragging = false; };
+    }
+
+    private void OnEnable()
+    {
+        inputActions?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputActions?.Disable();
+    }
+
+    private void Update()
+    {
+        // Read scroll input from scroll wheel (Vector2, Y component) and alt+mouse delta (float)
+        float scrollWheelZ = inputActions.Ball.scrollZ.ReadValue<Vector2>().y;
+        float altScrollZ = inputActions.Ball.altScrollZ.ReadValue<float>();
+
+        // Combine scroll inputs, scaled by their speeds
+        float combinedZ = scrollWheelZ * scrollSpeed + altScrollZ * altScrollSpeed;
+
+        if (Mathf.Abs(combinedZ) > 0.01f)
+        {
+            // Move ball forward or backward along camera's forward direction
+            transform.position += camera.transform.forward * combinedZ * Time.deltaTime;
+        }
     }
 
     private IEnumerator Drag()
@@ -50,15 +93,15 @@ public class DragAndScroll : MonoBehaviour
         isDragging = true;
         Vector3 offset = transform.position - WorldPos;
 
-        // grab
-        GetComponent<Rigidbody>().useGravity = false;
-        while(isDragging)
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+
+        while (isDragging)
         {
-            // dragging
             transform.position = WorldPos + offset;
             yield return null;
         }
-        // drop
-        GetComponent<Rigidbody>().useGravity = true;
+
+        rb.useGravity = true;
     }
 }
