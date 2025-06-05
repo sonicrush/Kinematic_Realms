@@ -99,9 +99,9 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Button With One Modifier",
-                    "id": "70772297-6f2c-47a7-abfa-a367808fc6d4",
-                    "path": "ButtonWithOneModifier",
+                    "name": "Two Modifiers",
+                    "id": "85d4ad4d-c21f-4573-8a00-bcbfd02a5488",
+                    "path": "TwoModifiers",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -110,8 +110,8 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Modifier",
-                    "id": "3cbd07a9-5fa8-42b3-bedd-21584f71bd0a",
+                    "name": "modifier1",
+                    "id": "8363aeb3-311b-44bd-8837-f2960e33aec4",
                     "path": "<Keyboard>/leftAlt",
                     "interactions": "",
                     "processors": "",
@@ -121,8 +121,19 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Button",
-                    "id": "2a4eb600-e0eb-4a2a-87c8-c5adf565b6d6",
+                    "name": "modifier2",
+                    "id": "5731ccb3-0d05-48bf-a7a8-3150c70e24be",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "altScrollZ",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "96f7963c-e3d4-46c6-a769-2b7a5afcec64",
                     "path": "<Mouse>/delta/y",
                     "interactions": "",
                     "processors": "",
