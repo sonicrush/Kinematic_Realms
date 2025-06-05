@@ -7,27 +7,28 @@ public class AccelerationExtrapolation : MonoBehaviour
     private Vector3 _previousVelocity;
     private Vector3 _presentVelocity;
     private Rigidbody _rigidbody;
-    [System.NonSerialized]public double accelerationX;
-    [System.NonSerialized]public double accelerationY;
-    [System.NonSerialized]public double accelerationZ;
+    [System.NonSerialized] public Vector3 AccelerationVector;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-	IEnumerator perSecond() 
+	IEnumerator PerSecond()
 	{
+		float seconds = 0.1f;
 		while(true) 
 		{
-		_previousVelocity = _presentVelocity;
-        _presentVelocity = _rigidbody.GetPointVelocity(transform.TransformPoint(targetObject.transform.position));
-        accelerationX = (_presentVelocity[0] - _previousVelocity[0]) / 0.1;
-        accelerationY = (_presentVelocity[1] - _previousVelocity[1]) / 0.1;
-        accelerationZ = (_presentVelocity[2] - _previousVelocity[2]) / 0.1;
-		yield return new WaitForSeconds(0.1f);
+			_previousVelocity = _presentVelocity;
+			//I wonder if there's a property in rigidbody that just holds the changing vector. That could be used instead of this function.
+			_presentVelocity = _rigidbody.GetPointVelocity(transform.TransformPoint(targetObject.transform.position));
+			AccelerationVector.x = (_presentVelocity.x - _previousVelocity.x) / seconds;
+			AccelerationVector.y = (_presentVelocity.y - _previousVelocity.y) / seconds;
+			AccelerationVector.z = (_presentVelocity.z - _previousVelocity.z) / seconds;
+			yield return new WaitForSeconds(seconds);
 		}
 	}
     void Start()
     { 
         _rigidbody = gameObject.GetComponent<Rigidbody>();
         _presentVelocity = _rigidbody.GetPointVelocity(transform.TransformPoint(targetObject.transform.position));
-        StartCoroutine(perSecond());
+        AccelerationVector = new Vector3(0f, 0f, 0f);
+        StartCoroutine(PerSecond());
     }
 
     // Update is called once per frame

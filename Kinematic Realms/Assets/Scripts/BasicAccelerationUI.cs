@@ -19,7 +19,7 @@ public class BasicAccelerationUI : MonoBehaviour
     {
 
         _text.text = String.Format("Acceleration in:\nX: {0:N1} m/s^2\nY: {1:N1} m/s^2\nZ: {2:N1} m/s^2",
-            _accelerationExtrapolation.accelerationX, _accelerationExtrapolation.accelerationY,
-            _accelerationExtrapolation.accelerationZ);
+            _accelerationExtrapolation.AccelerationVector.x, _accelerationExtrapolation.AccelerationVector.y,
+            _accelerationExtrapolation.AccelerationVector.z);
     }
 }
