@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class MovementTest : MonoBehaviour
 {
-    private new Rigidbody _rigidbody;
+    private Rigidbody _rigidbody;
     private InputAction _up;
     private InputAction _down;
     private InputAction _left;

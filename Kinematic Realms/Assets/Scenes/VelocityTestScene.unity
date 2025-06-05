@@ -742,8 +742,8 @@ GameObject:
   - component: {fileID: 1821561070}
   - component: {fileID: 1821561069}
   - component: {fileID: 1821561068}
-  - component: {fileID: 1821561073}
   - component: {fileID: 1821561074}
+  - component: {fileID: 1821561073}
   - component: {fileID: 1821561075}
   m_Layer: 0
   m_Name: Sphere
