@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class BasicAccelerationUI : MonoBehaviour
 {
-    public GameObject thisObject;
     public GameObject referenceObject;
     private TextMeshPro _text;
     private AccelerationExtrapolation _accelerationExtrapolation;
     
     void Start() 
     { 
-        _text = thisObject.GetComponent<TextMeshPro>();
+        _text = gameObject.GetComponent<TextMeshPro>();
         _accelerationExtrapolation = referenceObject.GetComponent<AccelerationExtrapolation>();
     }
 
