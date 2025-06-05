@@ -30,6 +30,6 @@ public class MovementTest : MonoBehaviour
         if(_right.IsPressed())
             _rigidbody.AddForce(Vector3.right * 2f, ForceMode.Force);
         if(_jump.IsPressed())
-            _rigidbody.AddForce(Vector3.up * 10.8f, ForceMode.Force);
+            _rigidbody.AddForce(Vector3.up * 10.81f, ForceMode.Force);
     }
 }
