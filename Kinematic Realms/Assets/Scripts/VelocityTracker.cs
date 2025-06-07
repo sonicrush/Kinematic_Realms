@@ -1,37 +1,37 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class VelocityTracker : MonoBehaviour
 {
-    private Vector3 lastPosition;
-    public Vector3 currentVelocity { get; private set; }
+    private Rigidbody rb;
 
-    void Start()
+    void Awake()
     {
-        lastPosition = transform.position;
+        rb = GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody component not found on this GameObject. Please add one.", this);
+            enabled = false; // Disable the script if no Rigidbody is found
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        // Calculate velocity: change in position over time
-        currentVelocity = (transform.position - lastPosition) / Time.deltaTime;
+        rb.linearVelocity = new Vector3(1, 1, 0);
 
-        //Log velocity in meters/second
-        Debug.Log("Velocity: " + currentVelocity + " m/s");
+        Debug.Log("Horizontal Velocity: " + gameObject.transform.position.x + " m/s");
+        Debug.Log("Vertical Velocity: " + gameObject.transform.position.y + " m/s");
 
-        //Update last position for the next frame
-        lastPosition = transform.position;
-
+        // Predict future position based on Rigidbody's current position and velocity
         PredictFuturePosition(1f);
-
     }
 
     void PredictFuturePosition(float secondsAhead)
     {
-        Vector3 predictedPos = transform.position + currentVelocity * secondsAhead;
-        Debug.DrawLine(transform.position, predictedPos, Color.green);
+        Vector3 predictedPos = rb.position + rb.linearVelocity * secondsAhead;
+        Debug.DrawLine(rb.position, predictedPos, Color.green);
 
-        Debug.Log("Predicted Position in " + secondsAhead + "s: " + predictedPos);
+        Debug.Log("Predicted Position in " + secondsAhead + "s: " + predictedPos.ToString("F2")); // "F2" formats to 2 decimal places
     }
-
 }
