@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -19,7 +19,7 @@ public class VelocityGraphUI : MonoBehaviour
 
     [Header("Axis Labels")]
     public TextMeshProUGUI yValueLabelPrefab; // Y_Value_Label_Prefab goes here
-    public int numberOfYLabels = 3; // How many Y-axis value labels to show (e.g., 0, 5, 10)
+    public int numberOfYLabels = 5; // How many Y-axis value labels to show (e.g., 0, 5, 10)
     public float yLabelOffset = 0.1f; // How far left of the graph Y labels should be
     public float yLabelSpacingFactor = 1.0f; // Control vertical spacing between labels
 

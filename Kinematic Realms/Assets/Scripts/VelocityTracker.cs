@@ -18,7 +18,7 @@ public class VelocityTracker : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector3(1, 1, 0);
+        //rb.linearVelocity = new Vector3(0, 0, 0);
 
         Debug.Log("Horizontal Velocity: " + gameObject.transform.position.x + " m/s");
         Debug.Log("Vertical Velocity: " + gameObject.transform.position.y + " m/s");

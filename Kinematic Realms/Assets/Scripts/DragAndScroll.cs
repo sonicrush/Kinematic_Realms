@@ -2,17 +2,28 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody))]
 public class DragAndScroll : MonoBehaviour
 {
     // Reference to the generated InputActions class (replace BallInputActions with your generated class name if different)
     private Ball.Ball_Input_Actions inputActions;
 
     private Vector3 curScreenPos;
-    private Camera camera;
+    private new Camera camera;
     private bool isDragging;
 
     [SerializeField] private float scrollSpeed = 5f;
     [SerializeField] private float altScrollSpeed = 3f;
+    [SerializeField] private float dragSmoothing = 15f;
+
+    private Rigidbody rb;
+    private Vector3 dragTargetPos;
+    private Vector3 dragOffset;
+    private Vector3 lastPosition;
+
+    private bool isScrollMoving = false;
+
+    public Vector3 CurrentVelocity { get; private set; }
 
     private Vector3 WorldPos
     {
@@ -39,6 +50,7 @@ public class DragAndScroll : MonoBehaviour
     private void Awake()
     {
         camera = Camera.main;
+        rb = GetComponent<Rigidbody>();
 
         // Initialize input actions
         inputActions = new Ball.Ball_Input_Actions();
@@ -62,15 +74,8 @@ public class DragAndScroll : MonoBehaviour
         inputActions.Ball.press.canceled += _ => { isDragging = false; };
     }
 
-    private void OnEnable()
-    {
-        inputActions?.Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputActions?.Disable();
-    }
+    private void OnEnable() => inputActions?.Enable();
+    private void OnDisable() => inputActions?.Disable();
 
     private void Update()
     {
@@ -81,25 +86,40 @@ public class DragAndScroll : MonoBehaviour
         // Combine scroll inputs, scaled by their speeds
         float combinedZ = scrollWheelZ * scrollSpeed + altScrollZ * altScrollSpeed;
 
-        if (Mathf.Abs(combinedZ) > 0.01f)
+        isScrollMoving = Mathf.Abs(combinedZ) > 0.01f;
+
+        if (isScrollMoving)
         {
             // Move ball forward or backward along camera's forward direction
-            transform.position += camera.transform.forward * combinedZ * Time.deltaTime;
+            Vector3 movement = camera.transform.forward * combinedZ;
+            rb.MovePosition(rb.position + movement * Time.deltaTime);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        CurrentVelocity = (transform.position - lastPosition) / Time.fixedDeltaTime;
+        lastPosition = transform.position;
     }
 
     private IEnumerator Drag()
     {
         isDragging = true;
-        Vector3 offset = transform.position - WorldPos;
+        dragOffset = transform.position - WorldPos;
 
-        Rigidbody rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
         while (isDragging)
         {
-            transform.position = WorldPos + offset;
-            yield return null;
+            dragTargetPos = WorldPos + dragOffset;
+
+            // Smoothly interpolate position toward target
+            Vector3 newPosition = Vector3.Lerp(rb.position, dragTargetPos, Time.deltaTime * dragSmoothing);
+            rb.MovePosition(newPosition);
+
+            yield return new WaitForFixedUpdate(); // sync with physics
         }
 
         rb.useGravity = true;
