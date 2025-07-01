@@ -664,6 +664,7 @@ GameObject:
   - component: {fileID: 513683056}
   - component: {fileID: 513683057}
   - component: {fileID: 513683058}
+  - component: {fileID: 513683059}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -801,6 +802,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollSpeed: 5
   altScrollSpeed: 3
+  dragSmoothing: 15
 --- !u!114 &513683058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,6 +815,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce59e0cd202533f4d8ef2d501024ecc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &513683059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513683050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47194763e242a5a4fa166225b1e9bcae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xOffset: 0
+  yOffset: 0
+  quaternionX: 0
+  quaternionY: 0
+  quaternionZ: 0
+  quaternionW: 0
 --- !u!1 &821532882
 GameObject:
   m_ObjectHideFlags: 0
