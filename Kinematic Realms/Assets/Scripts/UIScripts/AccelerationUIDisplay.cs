@@ -2,15 +2,15 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class BasicAccelerationUI : MonoBehaviour
+public class AccelerationUIDisplay : MonoBehaviour
 {
     public GameObject referenceObject;
-    private TextMeshPro _text;
+    private TextMeshProUGUI _text;
     private AccelerationExtrapolation _accelerationExtrapolation;
     
     void Start() 
     { 
-        _text = gameObject.GetComponent<TextMeshPro>();
+        _text = gameObject.GetComponent<TextMeshProUGUI>();
         _accelerationExtrapolation = referenceObject.GetComponent<AccelerationExtrapolation>();
     }
 
