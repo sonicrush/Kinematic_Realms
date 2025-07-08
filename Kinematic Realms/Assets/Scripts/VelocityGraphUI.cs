@@ -17,12 +17,20 @@ public class VelocityGraphUI : MonoBehaviour
     [Header("Line Properties")]
     public float lineWidth = 0.1f; // Public variable to easily adjust line thickness in Inspector
 
-    [Header("Axis Labels")]
+    [Header("Y Axis Labels")]
     public TextMeshProUGUI yValueLabelPrefab; // Y_Value_Label_Prefab goes here
     public int numberOfYLabels = 5; // How many Y-axis value labels to show (e.g., 0, 5, 10)
     public float yLabelOffset = 0.1f; // How far left of the graph Y labels should be
     public float yLabelSpacingFactor = 1.0f; // Control vertical spacing between labels
 
+    [Header("X Axis Labels")]
+    public TextMeshProUGUI xValueLabelPrefab;  // Prefab for X-axis time labels
+    public int numberOfXLabels = 6;             // How many labels on X-axis (including 0 and max)
+    public float xLabelOffset = 0.1f;           // How far below the graph X labels should be
+    private float currentLabelBaseTime = 0f;  // start time for current label set
+    public float xLabelStep = 1f;             // step between labels, e.g. 1 second
+    public float xLabelHorizontalOffset = 0f; // tweak this in inspector to align labels horizontally
+    public float xLabelSpacingFactor = 1.0f; // Multiply horizontal spacing for labels
 
     public float updateRate = 0.1f; // Time between samples
 
@@ -34,6 +42,7 @@ public class VelocityGraphUI : MonoBehaviour
 
     private LineRenderer lineRenderer;
     private List<TextMeshProUGUI> yLabels = new List<TextMeshProUGUI>();
+    private List<TextMeshProUGUI> xLabels = new List<TextMeshProUGUI>();
 
     void Start()
     {
@@ -50,6 +59,9 @@ public class VelocityGraphUI : MonoBehaviour
 
         // Initialize Y-axis labels
         SetupYAxisLabels();
+
+        // Initialize X-axis labels
+        SetupXAxisLabels();
 
     }
 
@@ -77,7 +89,7 @@ public class VelocityGraphUI : MonoBehaviour
 
             DrawGraph();
             UpdateYAxisLabels(); // Update positions and values
-
+            UpdateXAxisLabels();
         }
     }
 
@@ -129,30 +141,74 @@ public class VelocityGraphUI : MonoBehaviour
 
         Vector3 graphBottomLeftWorld = transform.position;
 
-        // Calculate the effective vertical step size for labels
-        // We divide graphHeight by (numberOfYLabels - 1) to get even spacing,
-        // then multiply by yLabelSpacingFactor to adjust that spacing.
-        float effectiveStepHeight = (numberOfYLabels > 1) ? (graphHeight / (numberOfYLabels - 1)) * yLabelSpacingFactor : 0;
-
-        // Calculate the velocity increment for each label
-        float velocityIncrement = (numberOfYLabels > 1) ? maxVelocityToShow / (numberOfYLabels - 1) : maxVelocityToShow / 2; // For single label, center it at half max velocity
+        float velocityIncrement = (numberOfYLabels > 1)
+            ? maxVelocityToShow / (numberOfYLabels - 1)
+            : maxVelocityToShow / 2;
 
         for (int i = 0; i < numberOfYLabels; i++)
         {
             float targetVelocity = i * velocityIncrement;
 
-            // Calculate y-position based on the effective step height
-            float yWorldPosition = graphBottomLeftWorld.y + (i * effectiveStepHeight);
-
-            // If you want the labels to only go up to maxVelocityToShow, and potentially be more spread out
-            // You might want to use:
-            // float yWorldPosition = graphBottomLeftWorld.y + (targetVelocity / maxVelocityToShow) * graphHeight * yLabelSpacingFactor;
-            // The current setup (i * effectiveStepHeight) is more direct for physical spacing.
+            float yWorldPosition = graphBottomLeftWorld.y
+                                 + (targetVelocity / maxVelocityToShow) * graphHeight * yLabelSpacingFactor;
 
             float xWorldPosition = graphBottomLeftWorld.x - yLabelOffset;
 
             yLabels[i].rectTransform.position = new Vector3(xWorldPosition, yWorldPosition, graphBottomLeftWorld.z);
-            yLabels[i].text = targetVelocity.ToString("F1"); // Format to one decimal place
+            yLabels[i].text = targetVelocity.ToString("F1");
+        }
+    }
+
+    void SetupXAxisLabels()
+    {
+        if (xValueLabelPrefab == null)
+        {
+            Debug.LogWarning("X Value Label Prefab is not assigned.");
+            return;
+        }
+
+        // Clear old labels
+        foreach (var label in xLabels)
+            Destroy(label.gameObject);
+        xLabels.Clear();
+
+        for (int i = 0; i < numberOfXLabels; i++)
+        {
+            TextMeshProUGUI newLabel = Instantiate(xValueLabelPrefab, lineRenderer.transform.parent);
+            newLabel.gameObject.SetActive(true);
+            xLabels.Add(newLabel);
+        }
+
+        UpdateXAxisLabels(); // Initial positioning
+    }
+    void UpdateXAxisLabels()
+    {
+        if (xLabels.Count == 0 || graphWidth <= 0 || numberOfXLabels == 0) return;
+
+        Vector3 graphBottomLeftWorld = transform.position;
+
+        float labelBlockLength = xLabelStep * (numberOfXLabels - 1);
+        float nextThreshold = currentLabelBaseTime + labelBlockLength;
+
+        Debug.Log($"TimeElapsed: {timeElapsed:F2}, CurrentLabelBaseTime: {currentLabelBaseTime:F2}, NextThreshold: {nextThreshold:F2}");
+
+        // Dynamically compute current label base time to follow sliding window
+        currentLabelBaseTime = Mathf.Max(0f, timeElapsed - graphDuration);
+
+        // Scale to convert seconds to world units
+        float timeToWorldUnitScale = graphWidth / graphDuration;
+
+        for (int i = 0; i < numberOfXLabels; i++)
+        {
+            float labelTime = currentLabelBaseTime + i * xLabelStep;
+
+            float xPos = (labelTime - currentLabelBaseTime) * timeToWorldUnitScale * xLabelSpacingFactor;
+
+            float yPos = graphBottomLeftWorld.y - xLabelOffset;
+            float xWorldPos = graphBottomLeftWorld.x + xPos + xLabelHorizontalOffset;
+
+            xLabels[i].rectTransform.position = new Vector3(xWorldPos, yPos, graphBottomLeftWorld.z);
+            xLabels[i].text = labelTime.ToString("F1") + "s";
         }
     }
 

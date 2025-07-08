@@ -2,41 +2,58 @@ using UnityEngine;
 
 public class velocityVector : MonoBehaviour
 {
-    private GameObject _vectorArrowOffset;
     private GameObject _vectorArrow;
     private Transform _vectorArrowTransformComponent;
     private Rigidbody rb;
-    public int xOffset, yOffset;
-    public int quaternionX, quaternionY, quaternionZ, quaternionW;
-    Quaternion quaternionThing;
-    Vector3 normalizedVector;
-    Vector3 vector3;
-    Vector3 velocityExtrapolator;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public string arrowPrefabPath = "Prefabs/vectorArrow";
+
     void Start()
     {
-        _vectorArrowOffset = Resources.Load<GameObject>("Prefabs/vectorArrow");
-        Vector3 vector3 = new Vector3(xOffset, yOffset, 0);
-        quaternionThing = new Quaternion(quaternionX, quaternionY, quaternionZ, quaternionW);
-        _vectorArrow = Instantiate(_vectorArrowOffset, vector3, quaternionThing, gameObject.GetComponent<Transform>());
-        _vectorArrowTransformComponent = _vectorArrow.GetComponent<Transform>();
-        velocityExtrapolator = rb.linearVelocity;
+        rb = GetComponent<Rigidbody>();
 
-}
-
-// Update is called once per frame
-void Update()
-    {
-        quaternionThing.w = quaternionW;
-        vector3.x = xOffset;
-        vector3.y = yOffset;
-        normalizedVector = velocityExtrapolator.normalized;
-        quaternionThing.x = normalizedVector.x;
-        quaternionThing.y = normalizedVector.y;
-        quaternionThing.z = normalizedVector.z;
-
-        _vectorArrowTransformComponent.Rotate(vector3);
-
+        // Load the prefab and instantiate as child of this GameObject (the Ball)
+        GameObject arrowPrefab = Resources.Load<GameObject>(arrowPrefabPath);
+        _vectorArrow = Instantiate(arrowPrefab, transform);
+        _vectorArrowTransformComponent = _vectorArrow.transform;
     }
+
+    void Update()
+    {
+        if (rb == null || _vectorArrowTransformComponent == null)
+            return;
+
+        Vector3 velocity = rb.linearVelocity;
+
+        if (velocity.sqrMagnitude > 0.01f)
+        {
+            Vector3 velocityDir = velocity.normalized;
+
+            // Calculate scale based on speed (tune these values)
+            float speed = velocity.magnitude;
+            float maxSpeed = 10f;
+            float minScale = 0.1f;
+            float maxScale = 3f;
+            float scaleX = Mathf.Clamp(speed / maxSpeed, minScale, maxScale);
+
+            // Apply rotation in XY plane
+            float angle = Mathf.Atan2(velocityDir.y, velocityDir.x) * Mathf.Rad2Deg;
+            _vectorArrowTransformComponent.rotation = Quaternion.Euler(0, 0, angle);
+
+            // Apply scaling only on X axis (arrow length)
+            _vectorArrowTransformComponent.localScale = new Vector3(scaleX, 1f, 1f);
+
+            // Adjust position so arrow base stays attached to ball
+            float arrowBaseLength = 1f; // adjust if your arrow prefab is longer/shorter
+            float arrowLength = arrowBaseLength * scaleX;
+            _vectorArrowTransformComponent.position = transform.position + velocityDir * (arrowLength / 2f);
+        }
+        else
+        {
+            // Shrink arrow when velocity is near zero
+            _vectorArrowTransformComponent.localScale = new Vector3(0f, 1f, 1f);
+        }
+    }
+
+
 }
