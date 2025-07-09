@@ -1,12 +1,14 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class ObjectUI : MonoBehaviour
 {
-
-    public Canvas worldSpaceUI;
+    public InputAction leftClick;
+    public GameObject worldSpaceUI;
     public Toggle accelerationUIToggle;
     public Toggle accelerationVectorToggle;
     public AccelerationUIDisplay accelerationUIDisplayComponent;
@@ -16,14 +18,18 @@ public class ObjectUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //worldSpaceUI = Instantiate(WorldSpaceUIPrefab, transformation parent as gameobject.getComponent<Transform>())
-
+        leftClick = InputSystem.actions.FindAction("UI/Click");
+        GameObject WorldSpaceUIPrefab = Resources.Load<GameObject>("Prefabs/ObjectUI");
+        worldSpaceUI = Instantiate(WorldSpaceUIPrefab);
+        worldSpaceUI.SetActive(false);
+        worldSpaceUI.GetComponent<ParentConstraint>().AddSource(new ConstraintSource {sourceTransform = gameObject.GetComponent<Transform>()});
+        
         Toggle[] toggles = worldSpaceUI.GetComponentsInChildren<Toggle>();
         accelerationUIToggle = toggles[0];
         accelerationVectorToggle = toggles[1];
         accelerationUIToggle.onValueChanged.AddListener(ToggleAccelerationUIComponent);
         worldSpaceUI.gameObject.SetActive(false);
-        // accelerationVectorToggle.onValueChanged.AddListener(ToggleAccelerationVectorComponent);
+        //accelerationVectorToggle.onValueChanged.AddListener(ToggleAccelerationVectorComponent);
 
 
 
@@ -32,11 +38,15 @@ public class ObjectUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    
+        if (leftClick.IsPressed())
+        {
+            OnMouseDown();
+        }
     }
     void OnMouseDown()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        print("Mouse down!");
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
@@ -57,7 +67,7 @@ public class ObjectUI : MonoBehaviour
 
         StartCoroutine(elapseSeconds(0.1f));
         //This makes the function continue only when the mouse is up
-        yield return new ReturnOnMouseUp();
+        yield return new ReturnOnBoolean(leftClick.WasReleasedThisFrame());
 
         //This checks to see if the elapseSeconds co-routine has finished. If so, do not display the UI.
         //This is to avoid showing the UI when the user's intention is to drag the object.
