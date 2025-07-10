@@ -7,38 +7,58 @@ using UnityEngine.UI;
 
 public class ObjectUI : MonoBehaviour
 {
+    public bool attachToObject;
+    public int yOffsetFromObject;
     public InputAction leftClick;
-    public GameObject worldSpaceUI;
-    public Toggle accelerationUIToggle;
-    public Toggle accelerationVectorToggle;
-    public AccelerationUIDisplay accelerationUIDisplayComponent;
-    bool secondsElapsed;
-    bool isToggleObjectUIRunning;
-    // public AccelerationVector accelerationVectorComponent;
+    [System.NonSerialized] public GameObject screenCanvas;
+    [System.NonSerialized] public GameObject worldSpaceUI;
+    private Toggle accelerationUIToggle;
+    private Toggle accelerationVectorToggle;
+    private GameObject accelerationUIDisplayObject;
+    private AccelerationVector accelerationVectorComponent;
+    private bool secondsElapsed;
+    [System.NonSerialized] public bool isToggleObjectUIRunning;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        leftClick = InputSystem.actions.FindAction("UI/Click");
         GameObject WorldSpaceUIPrefab = Resources.Load<GameObject>("Prefabs/ObjectUI");
+        GameObject screenCanvasPrefab = Resources.Load<GameObject>("Prefabs/ScreenCanvas");
+
+        screenCanvas = Instantiate(screenCanvasPrefab);
         worldSpaceUI = Instantiate(WorldSpaceUIPrefab);
-        worldSpaceUI.SetActive(false);
-        worldSpaceUI.GetComponent<ParentConstraint>().AddSource(new ConstraintSource {sourceTransform = gameObject.GetComponent<Transform>()});
+
+        leftClick = InputSystem.actions.FindAction("UI/Click");
+
+        if (attachToObject)
+        {
+            worldSpaceUI.GetComponent<ParentConstraint>().AddSource(new ConstraintSource { sourceTransform = gameObject.GetComponent<Transform>(), weight = 1 });
+            worldSpaceUI.GetComponent<ParentConstraint>().AddSource(new ConstraintSource { sourceTransform = worldSpaceUI.GetComponent<Transform>(), weight = 1 });
+            worldSpaceUI.GetComponent<ParentConstraint>().SetTranslationOffset(1, new Vector3(0, yOffsetFromObject, 0));
+        }
+    
+
+
+
+        Toggle[] toggles = worldSpaceUI.GetComponentsInChildren<Toggle>(true);
+
         
-        Toggle[] toggles = worldSpaceUI.GetComponentsInChildren<Toggle>();
-        accelerationUIToggle = toggles[0];
-        accelerationVectorToggle = toggles[1];
+
+
+        int accelerationUIToggleLocation = 0;
+        int accelerationVectorToggleLocation = 1;
+        accelerationUIToggle = toggles[accelerationUIToggleLocation];
+        accelerationVectorToggle = toggles[accelerationVectorToggleLocation];
+
         accelerationUIToggle.onValueChanged.AddListener(ToggleAccelerationUIComponent);
-        worldSpaceUI.gameObject.SetActive(false);
-        //accelerationVectorToggle.onValueChanged.AddListener(ToggleAccelerationVectorComponent);
-
-
-
+        accelerationVectorToggle.onValueChanged.AddListener(ToggleAccelerationVectorComponent);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (leftClick.IsPressed())
+        if (leftClick.WasPressedThisFrame())
         {
             OnMouseDown();
         }
@@ -63,19 +83,25 @@ public class ObjectUI : MonoBehaviour
             //this prevents from the function being called repetedly if the object is spam clicked
             yield break;
         }
-        isToggleObjectUIRunning = true;
 
-        StartCoroutine(elapseSeconds(0.1f));
+        isToggleObjectUIRunning = true;
+        secondsElapsed = false;
+
+        StartCoroutine(elapseSeconds(0.2f));
         //This makes the function continue only when the mouse is up
-        yield return new ReturnOnBoolean(leftClick.WasReleasedThisFrame());
+        yield return new ReturnOnFalse(leftClick.IsPressed);
 
         //This checks to see if the elapseSeconds co-routine has finished. If so, do not display the UI.
         //This is to avoid showing the UI when the user's intention is to drag the object.
         //This was my solution to a kind of "If the user's mouse is still down after x seconds, do not display the ui. Otherwise, display the ui." 
         //I am proud of coming up with this solution.
+        worldSpaceUI.GetComponent<Transform>().position = gameObject.GetComponent<Transform>().position;
+        worldSpaceUI.GetComponent<Transform>().Translate(0, yOffsetFromObject+1, 0);
         if (!secondsElapsed)
+        {
             worldSpaceUI.gameObject.SetActive(true);
-        secondsElapsed = false;
+        }
+        isToggleObjectUIRunning = false;
         
     }
     IEnumerator elapseSeconds(float time)
@@ -85,31 +111,26 @@ public class ObjectUI : MonoBehaviour
     }
     void ToggleAccelerationUIComponent(bool isChecked)
     {
-        if (isChecked)
+        if (accelerationUIDisplayObject == null)
         {
-            if (accelerationUIDisplayComponent == null)
-            {
-                accelerationUIDisplayComponent = gameObject.AddComponent<AccelerationUIDisplay>();
-                return;
-            }
-            accelerationUIDisplayComponent.enabled = true;
+            GameObject accelerationUIDisplayPrefab = Resources.Load<GameObject>("Prefabs/ScreenCanvasUI/AccelerationDisplay");
+            accelerationUIDisplayObject = Instantiate(accelerationUIDisplayPrefab,screenCanvas.GetComponent<Transform>());
+            
+            accelerationUIDisplayObject.GetComponentInChildren<AccelerationUIDisplay>(true).referenceObject = gameObject;
+        }
+    
+        accelerationUIDisplayObject.SetActive(isChecked);
+
+    }
+
+    void ToggleAccelerationVectorComponent(bool isChecked)
+    {
+    
+        if (accelerationVectorComponent == null)
+        {
+            accelerationVectorComponent = gameObject.AddComponent<AccelerationVector>();
             return;
         }
-        accelerationUIDisplayComponent.enabled = false;
+        accelerationVectorComponent.vectorArrow.SetActive(isChecked);
     }
-    
-    // void ToggleAccelerationVectorComponent(bool isChecked)
-    // {
-    //     if (isChecked)
-    //     {
-    //         if (accelerationVectorComponent == null)
-    //         {
-    //             accelerationVectorComponent = gameObject.AddComponent<AccelerationVector>();
-    //             return;
-    //         }
-    //         accelerationVectorComponent.enabled = true;
-    //         return;
-    //     }
-    //     accelerationVectorComponent.enabled = false;
-    // }
 }
