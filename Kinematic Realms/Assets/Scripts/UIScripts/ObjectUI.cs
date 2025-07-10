@@ -12,9 +12,10 @@ public class ObjectUI : MonoBehaviour
     public Toggle accelerationUIToggle;
     public Toggle accelerationVectorToggle;
     public AccelerationUIDisplay accelerationUIDisplayComponent;
+    public AccelerationVector accelerationVectorComponent;
     bool secondsElapsed;
     bool isToggleObjectUIRunning;
-    // public AccelerationVector accelerationVectorComponent;
+   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,14 +23,21 @@ public class ObjectUI : MonoBehaviour
         GameObject WorldSpaceUIPrefab = Resources.Load<GameObject>("Prefabs/ObjectUI");
         worldSpaceUI = Instantiate(WorldSpaceUIPrefab);
         worldSpaceUI.SetActive(false);
-        worldSpaceUI.GetComponent<ParentConstraint>().AddSource(new ConstraintSource {sourceTransform = gameObject.GetComponent<Transform>()});
+        worldSpaceUI.GetComponent<ParentConstraint>().AddSource(new ConstraintSource { sourceTransform = gameObject.GetComponent<Transform>(), weight = 1 });
+        worldSpaceUI.GetComponent<ParentConstraint>().AddSource(new ConstraintSource { sourceTransform = worldSpaceUI.GetComponent<Transform>(), weight = 1 });
+        worldSpaceUI.GetComponent<ParentConstraint>().SetTranslationOffset(1, new Vector3(0, 1, 0));
+        
+        
+        
+        
+        
         
         Toggle[] toggles = worldSpaceUI.GetComponentsInChildren<Toggle>();
         accelerationUIToggle = toggles[0];
         accelerationVectorToggle = toggles[1];
         accelerationUIToggle.onValueChanged.AddListener(ToggleAccelerationUIComponent);
         worldSpaceUI.gameObject.SetActive(false);
-        //accelerationVectorToggle.onValueChanged.AddListener(ToggleAccelerationVectorComponent);
+        accelerationVectorToggle.onValueChanged.AddListener(ToggleAccelerationVectorComponent);
 
 
 
@@ -38,7 +46,7 @@ public class ObjectUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (leftClick.IsPressed())
+        if (leftClick.WasPressedThisFrame())
         {
             OnMouseDown();
         }
@@ -63,19 +71,24 @@ public class ObjectUI : MonoBehaviour
             //this prevents from the function being called repetedly if the object is spam clicked
             yield break;
         }
-        isToggleObjectUIRunning = true;
 
-        StartCoroutine(elapseSeconds(0.1f));
+        isToggleObjectUIRunning = true;
+        secondsElapsed = false;
+
+        StartCoroutine(elapseSeconds(0.2f));
         //This makes the function continue only when the mouse is up
-        yield return new ReturnOnBoolean(leftClick.WasReleasedThisFrame());
+        yield return new ReturnOnFalse(leftClick.IsPressed);
 
         //This checks to see if the elapseSeconds co-routine has finished. If so, do not display the UI.
         //This is to avoid showing the UI when the user's intention is to drag the object.
         //This was my solution to a kind of "If the user's mouse is still down after x seconds, do not display the ui. Otherwise, display the ui." 
         //I am proud of coming up with this solution.
-        if (!secondsElapsed)
-            worldSpaceUI.gameObject.SetActive(true);
-        secondsElapsed = false;
+        if (!secondsElapsed) { 
+        worldSpaceUI.gameObject.SetActive(true);
+            print("Set to true!");
+        }
+        print("I finished!");
+        isToggleObjectUIRunning = false;
         
     }
     IEnumerator elapseSeconds(float time)
@@ -97,19 +110,16 @@ public class ObjectUI : MonoBehaviour
         }
         accelerationUIDisplayComponent.enabled = false;
     }
+
+    void ToggleAccelerationVectorComponent(bool isChecked)
+    {
     
-    // void ToggleAccelerationVectorComponent(bool isChecked)
-    // {
-    //     if (isChecked)
-    //     {
-    //         if (accelerationVectorComponent == null)
-    //         {
-    //             accelerationVectorComponent = gameObject.AddComponent<AccelerationVector>();
-    //             return;
-    //         }
-    //         accelerationVectorComponent.enabled = true;
-    //         return;
-    //     }
-    //     accelerationVectorComponent.enabled = false;
-    // }
+        if (accelerationVectorComponent == null)
+        {
+            accelerationVectorComponent = gameObject.AddComponent<AccelerationVector>();
+            return;
+        }
+        print("Toggled Vector");
+        accelerationVectorComponent.vectorArrow.SetActive(isChecked);
+    }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8617125630407614763}
   - component: {fileID: 17545971900285510}
   - component: {fileID: 2916933332014345780}
+  - component: {fileID: 6297929253650978964}
   m_Layer: 0
   m_Name: vectorArrow
   m_TagString: Untagged
@@ -103,3 +104,26 @@ MonoBehaviour:
   stemLength: 1
   tipLength: 0.5
   tipHeight: 0.5
+--- !u!1773428102 &6297929253650978964
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5423139042133308806}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Weight: 1
+  m_TranslationAtRest: {x: 0, y: 0, z: 0}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets: []
+  m_RotationOffsets: []
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 0
+  m_AffectRotationY: 0
+  m_AffectRotationZ: 0
+  m_Active: 1
+  m_IsLocked: 0
+  m_Sources: []

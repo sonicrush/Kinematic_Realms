@@ -1,11 +1,12 @@
-using UnityEngine;
 using UnityEditor;
-public class accelerationVector : MonoBehaviour
+using UnityEngine;
+using UnityEngine.Animations;
+public class AccelerationVector : MonoBehaviour
 
 {
     private AccelerationExtrapolation _accelerationExtraporlator;
     private GameObject _vectorArrowAsset;
-    private GameObject _vectorArrow;
+    public GameObject vectorArrow;
     private Transform _vectorArrowTransformComponent;
     public int xOffset;
     public int yOffset;
@@ -23,9 +24,12 @@ public class accelerationVector : MonoBehaviour
         _vectorArrowAsset = Resources.Load<GameObject>("Prefabs/vectorArrow");
         Vector3 vector3 = new Vector3(xOffset, yOffset, 0);
         quaterionThing = new Quaternion(quaterionX, quaterionY, quaterionZ, quaterionW);
-        _vectorArrow = Instantiate(_vectorArrowAsset, vector3,quaterionThing, gameObject.GetComponent<Transform>());
-        _vectorArrowTransformComponent = _vectorArrow.GetComponent<Transform>();
-       
+        vectorArrow = Instantiate(_vectorArrowAsset);
+        _vectorArrowTransformComponent = vectorArrow.GetComponent<Transform>();
+        vectorArrow.GetComponent<ParentConstraint>().AddSource(new ConstraintSource { sourceTransform = gameObject.GetComponent<Transform>(), weight = 1 });
+        vectorArrow.GetComponent<ParentConstraint>().AddSource(new ConstraintSource { sourceTransform = vectorArrow.GetComponent<Transform>(), weight = 1 });
+        vectorArrow.GetComponent<ParentConstraint>().SetTranslationOffset(1, new Vector3(0, 0, 0));
+
     }
 
     // Update is called once per frame
