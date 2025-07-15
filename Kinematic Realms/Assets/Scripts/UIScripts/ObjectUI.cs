@@ -65,7 +65,6 @@ public class ObjectUI : MonoBehaviour
     }
     void OnMouseDown()
     {
-        print("Mouse down!");
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
@@ -95,10 +94,11 @@ public class ObjectUI : MonoBehaviour
         //This is to avoid showing the UI when the user's intention is to drag the object.
         //This was my solution to a kind of "If the user's mouse is still down after x seconds, do not display the ui. Otherwise, display the ui." 
         //I am proud of coming up with this solution.
-        worldSpaceUI.GetComponent<Transform>().position = gameObject.GetComponent<Transform>().position;
-        worldSpaceUI.GetComponent<Transform>().Translate(0, yOffsetFromObject+1, 0);
+
         if (!secondsElapsed)
         {
+            worldSpaceUI.GetComponent<Transform>().position = gameObject.GetComponent<Transform>().position;
+            worldSpaceUI.GetComponent<Transform>().Translate(0, yOffsetFromObject + 1, 0);
             worldSpaceUI.gameObject.SetActive(true);
         }
         isToggleObjectUIRunning = false;
@@ -108,6 +108,7 @@ public class ObjectUI : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         secondsElapsed = true;
+        print("Second has elapsed!");
     }
     void ToggleAccelerationUIComponent(bool isChecked)
     {
