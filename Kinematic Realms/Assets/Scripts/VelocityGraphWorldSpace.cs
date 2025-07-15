@@ -2,7 +2,7 @@
 using UnityEngine;
 using TMPro;
 
-public class VelocityGraphUI : MonoBehaviour
+public class VelocityGraphWorldSpace : MonoBehaviour
 {
     public Transform target; // Object to track
     public float graphDuration = 5f; // How many seconds to show on X-axis (e.g., 5 seconds)

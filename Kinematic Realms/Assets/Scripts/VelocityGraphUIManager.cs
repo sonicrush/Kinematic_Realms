@@ -132,4 +132,10 @@ public class VelocityGraphUIManager : MonoBehaviour
             xLabels[i].text = labelTime.ToString("F1") + "s";
         }
     }
+    void OnEnable()
+    {
+        UpdateGraph();
+        UpdateXLabels();
+    }
+
 }

@@ -10,4 +10,9 @@ public class ToggleVGraph : MonoBehaviour
     {
         gameObject.SetActive(!gameObject.activeSelf);
     }
+    public void CloseGraph()
+    {
+        gameObject.SetActive(false);
+    }
+
 }
