@@ -7,7 +7,7 @@ using UnityEngine.Animations;
 public class AccelerationVector : MonoBehaviour
 
 {
-    private AccelerationExtrapolation _accelerationExtraporlator;
+    private AccelerationTracker _accelerationExtraporlator;
     public GameObject vectorArrow;
     private Transform _vectorArrowTransformComponent;
     private vectorArrowObject vectorArrowScriptComponent;
@@ -25,7 +25,7 @@ public class AccelerationVector : MonoBehaviour
     Vector3 accelerationVector;
     void Start()
     {
-        _accelerationExtraporlator = gameObject.GetComponent<AccelerationExtrapolation>();
+        _accelerationExtraporlator = gameObject.GetComponent<AccelerationTracker>();
 
         if (vectorArrow == null)
         {

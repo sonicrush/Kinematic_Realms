@@ -6,7 +6,7 @@ public class AccelerationUIDisplay : MonoBehaviour
 {
     public GameObject referenceObject;
     public TextMeshProUGUI textObject;
-    private AccelerationExtrapolation _accelerationExtrapolation;
+    private AccelerationTracker _accelerationExtrapolation;
     
     void Start() 
     {
@@ -17,7 +17,7 @@ public class AccelerationUIDisplay : MonoBehaviour
                 textObject = gameObject.GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        _accelerationExtrapolation = referenceObject.GetComponent<AccelerationExtrapolation>();
+        _accelerationExtrapolation = referenceObject.GetComponent<AccelerationTracker>();
     }
 
     void Update()

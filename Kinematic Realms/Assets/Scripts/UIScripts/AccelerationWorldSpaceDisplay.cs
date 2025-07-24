@@ -6,12 +6,12 @@ public class AccelerationWorldSpaceDisplay : MonoBehaviour
 {
     public GameObject referenceObject;
     private TextMeshPro _text;
-    private AccelerationExtrapolation _accelerationExtrapolation;
+    private AccelerationTracker _accelerationExtrapolation;
     
     void Start() 
     { 
         _text = gameObject.GetComponent<TextMeshPro>();
-        _accelerationExtrapolation = referenceObject.GetComponent<AccelerationExtrapolation>();
+        _accelerationExtrapolation = referenceObject.GetComponent<AccelerationTracker>();
     }
 
     void Update()
