@@ -472,6 +472,7 @@ GameObject:
   - component: {fileID: 1390536536}
   - component: {fileID: 1390536538}
   - component: {fileID: 1390536539}
+  - component: {fileID: 1390536540}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -620,16 +621,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attachToObject: 0
+  xOffsetFromObject: 0
   yOffsetFromObject: 0
-  leftClick:
-    m_Name: Left Click
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 53cf1a75-1ece-40c0-8bd1-30f89f995aea
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  zOffsetFromObject: 0
 --- !u!114 &1390536539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,6 +636,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5eef099408abf4eb127f2d555fcaea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1390536540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390536531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02824d2882d46443baf955ac934b981e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vectorArrow: {fileID: 0}
+  xOffset: 0
+  yOffset: 0
+  zOffset: 0
+  dontAttachToObject: 0
+  dontChangeByMagnitude: 0
+  vectorInitialLength: 0
+  vectorMaxMagnitude: 0
+  unitScalar: 0
 --- !u!1 &1566089776
 GameObject:
   m_ObjectHideFlags: 0
