@@ -563,7 +563,7 @@ Transform:
   m_GameObject: {fileID: 1390536531}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 3.37, z: 2.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -581,6 +581,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7971be2022b2dc4baaad155e336b55a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 0}
+  _force: {x: 0, y: 0, z: 0}
 --- !u!54 &1390536537
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -624,6 +626,19 @@ MonoBehaviour:
   xOffsetFromObject: 0
   yOffsetFromObject: 0
   zOffsetFromObject: 0
+  accelerationUIDisplayObject: {fileID: 0}
+  accelerationVectorComponent: {fileID: 0}
+  leftClick:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 77e4d617-334d-42cc-8a00-18df3d94300d
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  secondsElapsed: 0
+  isToggleObjectUIRunning: 0
 --- !u!114 &1390536539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,6 +651,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5eef099408abf4eb127f2d555fcaea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 0}
+  _up:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: f3edc0ca-1467-4390-8a1e-d628dcdc96e2
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _down:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e2499c19-9d4b-4fd5-82a6-3d24922c26c0
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _left:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: ed22e108-f1da-4949-9776-2f2ed6c63f76
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _right:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 395a2a9b-ed51-4811-a688-f3a683b98ec7
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _jump:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 9a5a0fd3-ba77-43bc-99ff-1a24dd4acb89
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!114 &1390536540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -648,7 +709,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02824d2882d46443baf955ac934b981e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _accelerationExtraporlator: {fileID: 0}
   vectorArrow: {fileID: 0}
+  _vectorArrowTransformComponent: {fileID: 0}
+  vectorArrowScriptComponent: {fileID: 0}
   xOffset: 0
   yOffset: 0
   zOffset: 0
@@ -657,6 +721,116 @@ MonoBehaviour:
   vectorInitialLength: 0
   vectorMaxMagnitude: 0
   unitScalar: 0
+  accelerationVector: {x: 0, y: 0, z: 0}
+--- !u!1 &1412591042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1412591046}
+  - component: {fileID: 1412591045}
+  - component: {fileID: 1412591044}
+  - component: {fileID: 1412591043}
+  m_Layer: 0
+  m_Name: Plane (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!64 &1412591043
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412591042}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1412591044
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412591042}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1412591045
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412591042}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1412591046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412591042}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.36770844, y: -0.0028743641, z: -0.0011365602, w: 0.929936}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: -43.149, y: -0.354, z: 0}
 --- !u!1 &1566089776
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,4 +948,5 @@ SceneRoots:
   - {fileID: 445184369}
   - {fileID: 1390536535}
   - {fileID: 1566089780}
+  - {fileID: 1412591046}
   - {fileID: 880244787}
