@@ -8,6 +8,7 @@ public class vectorArrowObject : MonoBehaviour
     public float stemLength;
     public float tipLength;
     public float tipHeight;
+    public float stemLengthBonus;
     private Mesh mesh;
     private Vector3[] vertices;
     private int[] triangles;
@@ -42,7 +43,7 @@ public class vectorArrowObject : MonoBehaviour
 
         vertices[0] = (stemOrigin + (stemHeight / 2f * Vector3.down));
         vertices[1] = (vertices[0] + (stemHeight * Vector3.up));
-        vertices[2] = (vertices[1] + (stemLength * Vector3.right));
+        vertices[2] = (vertices[1] + ((stemLength + stemLengthBonus) * Vector3.right));
         vertices[3] = (vertices[2] + (stemHeight * Vector3.down));
 
         //Stem triangles
@@ -54,7 +55,7 @@ public class vectorArrowObject : MonoBehaviour
         triangles[4] = 2;
         triangles[5] = 3;
         //tip setup
-        Vector3 tipOrigin = stemLength * Vector3.right;
+        Vector3 tipOrigin = (stemLength + stemLengthBonus) * Vector3.right;
 
         //tip points
         //topMiddleTip = 4;
