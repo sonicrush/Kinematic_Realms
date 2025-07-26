@@ -3,25 +3,21 @@ using UnityEngine;
 public class AccelerationTracker : MonoBehaviour
 {
     private Rigidbody _rigidbody;
-    private Vector3 _force;
+    private Vector3 _velocity;
+    private Vector3 _previousVelocity;
     [System.NonSerialized] public Vector3 AccelerationVector;
+    
 
     void Start()
     { 
 	    _rigidbody = gameObject.GetComponent<Rigidbody>();
 	    AccelerationVector = new Vector3(0f, 0f, 0f);
+        _previousVelocity = Vector3.zero;
     }
     private void FixedUpdate()
     {
-        //This implementation was faulty, as it did not track natural, non-script force input
-        //_force = _rigidbody.GetAccumulatedForce();
-        //AccelerationVector.x = _force.x / _rigidbody.mass;
-        //if(_rigidbody.useGravity)
-        //    //if(_rigidbody.isNotOnFloor)
-        //        AccelerationVector.y = (_force.y / _rigidbody.mass) - 9.8f;
-        //else
-        //    AccelerationVector.y = _force.y / _rigidbody.mass;
-
-        //AccelerationVector.z = _force.z / _rigidbody.mass;              
+        _velocity = _rigidbody.linearVelocity;
+        AccelerationVector = (_velocity - _previousVelocity) / Time.fixedDeltaTime;
+        _previousVelocity = _velocity;         
     }
 }
