@@ -25,7 +25,8 @@ public class AccelerationVector : MonoBehaviour
     Vector3 accelerationVector;
     void Start()
     {
-        _accelerationExtraporlator = gameObject.GetComponent<AccelerationTracker>();
+
+        _accelerationExtraporlator = AccelerationTracker.TrackAcceleration(gameObject);
 
         if (vectorArrow == null)
         {
@@ -45,30 +46,30 @@ public class AccelerationVector : MonoBehaviour
         _vectorArrowTransformComponent = vectorArrow.GetComponent<Transform>();
         vectorArrowScriptComponent = vectorArrow.GetComponent<vectorArrowObject>();
         vectorArrowScriptComponent.stemLength = vectorInitialLength;
-        if(dontChangeByMagnitude)
+        if (dontChangeByMagnitude)
         {
             vectorMaxMagnitude = 0;
         }
-        else if(vectorMaxMagnitude == 0)
+        else if (vectorMaxMagnitude == 0)
         {
             vectorMaxMagnitude = 1;
         }
 
-        if(unitScalar == 0)
+        if (unitScalar == 0)
         {
             unitScalar = 1;
         }
 
-        
+
 
     }
 
-    
+
     void Update()
     {
         accelerationVector = _accelerationExtraporlator.AccelerationVector;
         Vector3 accelerationNormalized = accelerationVector.normalized;
-        if(accelerationNormalized.z == 0) // For when only 2D motion occurs
+        if (accelerationNormalized.z == 0) // For when only 2D motion occurs
         {
             float angleXtoYRadians = Mathf.Atan2(accelerationNormalized.y, accelerationNormalized.x);
             _vectorArrowTransformComponent.rotation = new Quaternion(0, 0, Mathf.Sin(angleXtoYRadians / 2), Mathf.Cos(angleXtoYRadians / 2));
@@ -80,7 +81,7 @@ public class AccelerationVector : MonoBehaviour
         Vector3 xzNormalized = new Vector3(accelerationVector.x, 0, accelerationVector.z).normalized;
 
 
-        float angleXtoZRadians = Mathf.Atan2(accelerationNormalized.z,accelerationNormalized.x);
+        float angleXtoZRadians = Mathf.Atan2(accelerationNormalized.z, accelerationNormalized.x);
 
         float angleXZtoFinalVectorRadians;
         Vector3 crossXZtoY;
@@ -114,5 +115,9 @@ public class AccelerationVector : MonoBehaviour
         vectorArrowScriptComponent.stemLengthBonus = Mathf.Clamp(accelerationVector.magnitude / unitScalar, 0f, vectorMaxMagnitude);
         //vectorArrowScriptComponent.stemLength = vectorInitialLength;
         //Uncomment when trying to find the perfect initial length for an object.
+    }
+    void OnDestroy()
+    {
+        _accelerationExtraporlator.StopTrackingAcceleration();
     }
 }
