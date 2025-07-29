@@ -1,59 +1,114 @@
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class velocityVector : MonoBehaviour
 {
-    private GameObject _vectorArrow;
+    private VelocityTracker _velocityTracker;
+    public GameObject vectorArrow;
     private Transform _vectorArrowTransformComponent;
-    private Rigidbody rb;
+    private vectorArrowObject vectorArrowScriptComponent;
+    public int xOffset;
+    public int yOffset;
+    public int zOffset;
+    public bool dontAttachToObject;
+    public bool dontChangeByMagnitude;
+    public float vectorInitialLength; 
+    public float vectorMaxMagnitude;
+    public float unitScalar; // TODO: Implement dynamic scaling
+    public string vectorArrowPrefabPath = "Prefabs/vectorArrow";
 
-    public string arrowPrefabPath = "Prefabs/vectorArrow";
 
+    Vector3 velocityVector;
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        _velocityTracker = gameObject.GetComponent<VelocityTracker>();
 
-        // Load the prefab and instantiate as child of this GameObject (the Ball)
-        GameObject arrowPrefab = Resources.Load<GameObject>(arrowPrefabPath);
-        _vectorArrow = Instantiate(arrowPrefab, transform);
-        _vectorArrowTransformComponent = _vectorArrow.transform;
+        if (vectorArrow == null)
+        {
+            GameObject _vectorArrowAsset = Resources.Load<GameObject>(vectorArrowPrefabPath);
+            vectorArrow = Instantiate(_vectorArrowAsset);
+            if (!dontAttachToObject)
+            {
+                vectorArrow.GetComponent<ParentConstraint>().AddSource(new ConstraintSource { sourceTransform = gameObject.GetComponent<Transform>(), weight = 1 });
+                vectorArrow.GetComponent<ParentConstraint>().AddSource(new ConstraintSource { sourceTransform = vectorArrow.GetComponent<Transform>(), weight = 1 });
+                vectorArrow.GetComponent<ParentConstraint>().SetTranslationOffset(1, new Vector3(xOffset, yOffset, zOffset));
+            }
+            else
+            {
+                vectorArrow.GetComponent<Transform>().Translate(xOffset, yOffset, zOffset);
+            }
+        }
+        _vectorArrowTransformComponent = vectorArrow.GetComponent<Transform>();
+        vectorArrowScriptComponent = vectorArrow.GetComponent<vectorArrowObject>();
+        vectorArrowScriptComponent.stemLength = vectorInitialLength;
+        if (dontChangeByMagnitude)
+        {
+            vectorMaxMagnitude = 0;
+        }
+        else if (vectorMaxMagnitude == 0)
+        {
+            vectorMaxMagnitude = 1;
+        }
+
+        if (unitScalar == 0)
+        {
+            unitScalar = 1;
+        }
+
+
+
     }
+
 
     void Update()
     {
-        if (rb == null || _vectorArrowTransformComponent == null)
-            return;
-
-        Vector3 velocity = rb.linearVelocity;
-
-        if (velocity.sqrMagnitude > 0.01f)
+        velocityVector = _velocityTracker.velocityVector;
+        Vector3 velocityNormalized = velocityVector.normalized;
+        if (velocityNormalized.z == 0) // For when only 2D motion occurs
         {
-            Vector3 velocityDir = velocity.normalized;
+            float angleXtoYRadians = Mathf.Atan2(velocityNormalized.y, velocityNormalized.x);
+            _vectorArrowTransformComponent.rotation = new Quaternion(0, 0, Mathf.Sin(angleXtoYRadians / 2), Mathf.Cos(angleXtoYRadians / 2));
+            ApplyMagnitude(velocityVector.magnitude);
+            return;
+        }
 
-            // Calculate scale based on speed (tune these values)
-            float speed = velocity.magnitude;
-            float maxSpeed = 10f;
-            float minScale = 0.1f;
-            float maxScale = 3f;
-            float scaleX = Mathf.Clamp(speed / maxSpeed, minScale, maxScale);
 
-            // Apply rotation in XY plane
-            float angle = Mathf.Atan2(velocityDir.y, velocityDir.x) * Mathf.Rad2Deg;
-            _vectorArrowTransformComponent.rotation = Quaternion.Euler(0, 0, angle);
+        Vector3 xzNormalized = new Vector3(velocityVector.x, 0, velocityVector.z).normalized;
 
-            // Apply scaling only on X axis (arrow length)
-            _vectorArrowTransformComponent.localScale = new Vector3(scaleX, 1f, 1f);
 
-            // Adjust position so arrow base stays attached to ball
-            float arrowBaseLength = 1f; // adjust if your arrow prefab is longer/shorter
-            float arrowLength = arrowBaseLength * scaleX;
-            _vectorArrowTransformComponent.position = transform.position + velocityDir * (arrowLength / 2f);
+        float angleXtoZRadians = Mathf.Atan2(velocityNormalized.z, velocityNormalized.x);
+
+        float angleXZtoFinalVectorRadians;
+        Vector3 crossXZtoY;
+        if (xzNormalized.x == 0 && xzNormalized.z == 0) //To prevent cross product from losing information when no lateral movement occurs 
+        {
+            crossXZtoY = Vector3.forward;
+            angleXZtoFinalVectorRadians = Mathf.Atan2(velocityNormalized.y, velocityNormalized.x);
         }
         else
         {
-            // Shrink arrow when velocity is near zero
-            _vectorArrowTransformComponent.localScale = new Vector3(0f, 1f, 1f);
+            crossXZtoY = Vector3.Cross(xzNormalized, velocityNormalized).normalized;
+            angleXZtoFinalVectorRadians = Vector3.Angle(xzNormalized, velocityNormalized) * Mathf.Deg2Rad;
         }
+
+        Quaternion rotation1 = new Quaternion(0, -1 * Mathf.Sin(angleXtoZRadians / 2), 0, Mathf.Cos(angleXtoZRadians / 2));
+        Quaternion rotation2 = new Quaternion(crossXZtoY.x * Mathf.Sin(angleXZtoFinalVectorRadians / 2), crossXZtoY.y * Mathf.Sin(angleXZtoFinalVectorRadians / 2), crossXZtoY.z * Mathf.Sin(angleXZtoFinalVectorRadians / 2), Mathf.Cos(angleXZtoFinalVectorRadians / 2));
+        Quaternion rotation3 = rotation2 * rotation1;
+        _vectorArrowTransformComponent.rotation = rotation3;
+        ApplyMagnitude(velocityVector.magnitude);
+
+
     }
 
+    void ApplyMagnitude(float magnitude)
+    {
+        //if(dynamicScaling)
+        //{
+        //    unitScalar = Some math to make it dynamic with magnitude;
+        //}
 
+        vectorArrowScriptComponent.stemLengthBonus = Mathf.Clamp(velocityVector.magnitude / unitScalar, 0f, vectorMaxMagnitude);
+        //vectorArrowScriptComponent.stemLength = vectorInitialLength;
+        //Uncomment when trying to find the perfect initial length for an object.
+    }
 }
