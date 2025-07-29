@@ -12,13 +12,23 @@ public class VelocityGraphUIManager : MonoBehaviour
     public TextMeshProUGUI yLabelPrefab;
     public RectTransform xLabelParent;
     public RectTransform yLabelParent;
+    public GameObject GraphContainer;
 
     [Header("Graph Settings")]
     public float graphDuration = 5f;
     public float maxVelocityToShow = 10f;
-    public int numberOfYLabels = 5;
-    public int numberOfXLabels = 6;
     public float updateRate = 0.1f;
+
+    [Header("Y Axis Labels")]
+    public int numberOfYLabels = 5;
+    public float yLabelSpacingFactor = 1.0f; // Control vertical spacing between labels
+    public float yLabelOffset = -40f; // Default offset to left of graph
+
+    [Header("X Axis Labels")]
+    public int numberOfXLabels = 6;
+    public float xLabelSpacingFactor = 1.0f; // Multiply horizontal spacing for labels
+    public float xLabelOffset = -20f; // Default offset below the graph
+    public float xLabelHorizontalOffset = 0f;
 
     private List<float> timeSamples = new();
     private List<float> velocitySamples = new();
@@ -59,31 +69,56 @@ public class VelocityGraphUIManager : MonoBehaviour
 
             UpdateGraph();
             UpdateXLabels();
+            UpdateYLabels();
         }
     }
 
     void UpdateGraph()
     {
-        graphRenderer.graphPoints.Clear();
+        Rect rect = graphRenderer.GetComponent<RectTransform>().rect;
+        RectTransform GraphContainerRect = GraphContainer.GetComponent<RectTransform>();
 
-        if (velocitySamples.Count < 2)
-            return;
-
-        float width = graphRect.rect.width;
-        float height = graphRect.rect.height;
+        float width = rect.width;
+        float height = rect.height;
         float xScale = width / graphDuration;
         float yScale = height / maxVelocityToShow;
+
+        graphRenderer.graphPoints.Clear();
+
+        if (timeSamples.Count == 0 || velocitySamples.Count == 0)
+            return;
 
         float baseTime = timeSamples[0];
 
         for (int i = 0; i < velocitySamples.Count; i++)
         {
-            float x = (timeSamples[i] - baseTime) * xScale;
-            float y = Mathf.Clamp(velocitySamples[i] * yScale, 0, height);
+            if (i >= timeSamples.Count)
+                break;
+
+            float timeOffset = timeSamples[i] - baseTime;
+            float x = timeOffset * xScale + GraphContainerRect.position.x;
+            float y = velocitySamples[i] * yScale + GraphContainerRect.position.y;
+
+            // Ensure y is clamped inside the graph height
+            y = Mathf.Clamp(y, 0f, height);
+
             graphRenderer.graphPoints.Add(new Vector2(x, y));
         }
 
         graphRenderer.Redraw();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Rect rect = GetComponent<RectTransform>().rect;
+        Vector3[] corners = new Vector3[4];
+        GetComponent<RectTransform>().GetWorldCorners(corners);
+
+        Gizmos.color = Color.red;
+        for (int i = 0; i < 4; i++)
+        {
+            Gizmos.DrawLine(corners[i], corners[(i + 1) % 4]);
+        }
     }
 
     void SetupYLabels()
@@ -95,9 +130,9 @@ public class VelocityGraphUIManager : MonoBehaviour
             yLabels.Add(label);
 
             float normalized = (float)i / (numberOfYLabels - 1);
-            float y = normalized * height;
+            float y = normalized * height * yLabelSpacingFactor;
 
-            label.rectTransform.anchoredPosition = new Vector2(-40, y);
+            label.rectTransform.anchoredPosition = new Vector2(yLabelOffset, y);
             label.text = (normalized * maxVelocityToShow).ToString("F1");
         }
     }
@@ -111,9 +146,9 @@ public class VelocityGraphUIManager : MonoBehaviour
             xLabels.Add(label);
 
             float normalized = (float)i / (numberOfXLabels - 1);
-            float x = normalized * width;
+            float x = normalized * width * xLabelSpacingFactor + xLabelHorizontalOffset;
 
-            label.rectTransform.anchoredPosition = new Vector2(x, -20);
+            label.rectTransform.anchoredPosition = new Vector2(x, xLabelOffset);
         }
     }
 
@@ -130,6 +165,20 @@ public class VelocityGraphUIManager : MonoBehaviour
             float normalized = (float)i / (numberOfXLabels - 1);
             float labelTime = baseTime + normalized * graphDuration;
             xLabels[i].text = labelTime.ToString("F1") + "s";
+        }
+    }
+
+    void UpdateYLabels()
+    {
+        float height = graphRect.rect.height;
+
+        for (int i = 0; i < yLabels.Count; i++)
+        {
+            float normalized = (float)i / (numberOfYLabels - 1);
+            float y = normalized * height;
+            yLabels[i].rectTransform.anchoredPosition = new Vector2(yLabelOffset, y);
+            yLabels[i].text = (normalized * maxVelocityToShow).ToString("F1");
+
         }
     }
     void OnEnable()

@@ -9,10 +9,15 @@ public class UIVelocityGraphRenderer : Graphic
 
     protected override void OnPopulateMesh(VertexHelper vh)
     {
+        Debug.Log($"[UIVelocityGraphRenderer] Redrawing mesh with {graphPoints.Count} points");
         vh.Clear();
 
         if (graphPoints.Count < 2)
+        {
+            Debug.LogWarning("[UIVelocityGraphRenderer] Not enough points to draw a line.");
             return;
+        }
+            
 
         for (int i = 0; i < graphPoints.Count - 1; i++)
         {
