@@ -17,10 +17,10 @@ public class VelocityTracker : MonoBehaviour
             this.enabled = false;
             return;
         }
-        velocity = _rigidbody.linearVelocity;
+        velocityVector = _rigidbody.linearVelocity;
     }
     private void FixedUpdate()
     {
-        velocity = _rigidbody.linearVelocity;
+        velocityVector = _rigidbody.linearVelocity;
     }
 }
