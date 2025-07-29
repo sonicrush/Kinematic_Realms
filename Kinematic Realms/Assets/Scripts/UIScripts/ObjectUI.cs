@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
@@ -60,15 +59,11 @@ public class ObjectUI : MonoBehaviour
     //UI Toggle Methods
     void ToggleAccelerationUIComponent(bool isChecked)
     {
-        if (!isChecked)
-        {
-            Destroy(accelerationUIDisplayObject);
-            accelerationVectorComponent = null;
-        }
-        else if (accelerationUIDisplayObject == null)
+        if (accelerationUIDisplayObject == null)
         {
             GameObject accelerationUIDisplayPrefab = Resources.Load<GameObject>("Prefabs/ScreenCanvasUI/AccelerationDisplay");
             accelerationUIDisplayObject = Instantiate(accelerationUIDisplayPrefab, screenCanvas.GetComponent<Transform>());
+
             accelerationUIDisplayObject.GetComponentInChildren<AccelerationUIDisplay>(true).referenceObject = gameObject;
         }
 
@@ -78,22 +73,12 @@ public class ObjectUI : MonoBehaviour
 
     void ToggleAccelerationVectorComponent(bool isChecked)
     {
-        if (!isChecked)
+        if (accelerationVectorComponent == null)
         {
-            AccelerationVector component = gameObject.GetComponent<AccelerationVector>();
-            Destroy(component.vectorArrow);
-            Destroy(component);
-            accelerationVectorComponent = null;
-        }
-        else if (accelerationVectorComponent == null)
-        {
-            accelerationVectorComponent = gameObject.GetOrAddComponent<AccelerationVector>();
-            if(accelerationVectorComponent.vectorArrow  != null)
-                accelerationVectorComponent.vectorArrow.SetActive(isChecked);
+            accelerationVectorComponent = gameObject.AddComponent<AccelerationVector>();
             return;
         }
-        
-        
+        accelerationVectorComponent.vectorArrow.SetActive(isChecked);
     }
 
 
