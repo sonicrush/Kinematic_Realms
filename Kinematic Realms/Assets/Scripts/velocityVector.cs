@@ -18,7 +18,7 @@ public class velocityVector : MonoBehaviour
     public string vectorArrowPrefabPath = "Prefabs/vectorArrow";
 
 
-    Vector3 velocityVector;
+    private Vector3 velocityVector3;
     void Start()
     {
         _velocityTracker = gameObject.GetComponent<VelocityTracker>();
@@ -39,6 +39,7 @@ public class velocityVector : MonoBehaviour
             }
         }
         _vectorArrowTransformComponent = vectorArrow.GetComponent<Transform>();
+        print(_vectorArrowTransformComponent);
         vectorArrowScriptComponent = vectorArrow.GetComponent<vectorArrowObject>();
         vectorArrowScriptComponent.stemLength = vectorInitialLength;
         if (dontChangeByMagnitude)
@@ -62,18 +63,18 @@ public class velocityVector : MonoBehaviour
 
     void Update()
     {
-        velocityVector = _velocityTracker.velocityVector;
-        Vector3 velocityNormalized = velocityVector.normalized;
+        velocityVector3 = _velocityTracker.velocityVector;
+        Vector3 velocityNormalized = velocityVector3.normalized;
         if (velocityNormalized.z == 0) // For when only 2D motion occurs
         {
             float angleXtoYRadians = Mathf.Atan2(velocityNormalized.y, velocityNormalized.x);
             _vectorArrowTransformComponent.rotation = new Quaternion(0, 0, Mathf.Sin(angleXtoYRadians / 2), Mathf.Cos(angleXtoYRadians / 2));
-            ApplyMagnitude(velocityVector.magnitude);
+            ApplyMagnitude(velocityVector3.magnitude);
             return;
         }
 
 
-        Vector3 xzNormalized = new Vector3(velocityVector.x, 0, velocityVector.z).normalized;
+        Vector3 xzNormalized = new Vector3(velocityVector3.x, 0, velocityVector3.z).normalized;
 
 
         float angleXtoZRadians = Mathf.Atan2(velocityNormalized.z, velocityNormalized.x);
@@ -95,7 +96,7 @@ public class velocityVector : MonoBehaviour
         Quaternion rotation2 = new Quaternion(crossXZtoY.x * Mathf.Sin(angleXZtoFinalVectorRadians / 2), crossXZtoY.y * Mathf.Sin(angleXZtoFinalVectorRadians / 2), crossXZtoY.z * Mathf.Sin(angleXZtoFinalVectorRadians / 2), Mathf.Cos(angleXZtoFinalVectorRadians / 2));
         Quaternion rotation3 = rotation2 * rotation1;
         _vectorArrowTransformComponent.rotation = rotation3;
-        ApplyMagnitude(velocityVector.magnitude);
+        ApplyMagnitude(velocityVector3.magnitude);
 
 
     }
@@ -107,7 +108,7 @@ public class velocityVector : MonoBehaviour
         //    unitScalar = Some math to make it dynamic with magnitude;
         //}
 
-        vectorArrowScriptComponent.stemLengthBonus = Mathf.Clamp(velocityVector.magnitude / unitScalar, 0f, vectorMaxMagnitude);
+        vectorArrowScriptComponent.stemLengthBonus = Mathf.Clamp(velocityVector3.magnitude / unitScalar, 0f, vectorMaxMagnitude);
         //vectorArrowScriptComponent.stemLength = vectorInitialLength;
         //Uncomment when trying to find the perfect initial length for an object.
     }
