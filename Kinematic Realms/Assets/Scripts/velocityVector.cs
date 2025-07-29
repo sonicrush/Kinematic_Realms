@@ -65,7 +65,7 @@ public class velocityVector : MonoBehaviour
     {
         velocityVector3 = _velocityTracker.velocityVector;
         Vector3 velocityNormalized = velocityVector3.normalized;
-        if (velocityNormalized.z == 0) // For when only 2D motion occurs
+        if (velocityNormalized.z <= 0.000001f) // For when only 2D motion occurs
         {
             float angleXtoYRadians = Mathf.Atan2(velocityNormalized.y, velocityNormalized.x);
             _vectorArrowTransformComponent.rotation = new Quaternion(0, 0, Mathf.Sin(angleXtoYRadians / 2), Mathf.Cos(angleXtoYRadians / 2));
