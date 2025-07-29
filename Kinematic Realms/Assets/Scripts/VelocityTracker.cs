@@ -6,6 +6,8 @@ public class VelocityTracker : MonoBehaviour
 {
     private Rigidbody _rigidbody;
     [System.NonSerialized] public Vector3 velocityVector;
+    private Vector3 velocity;
+
     void Start()
     {
         _rigidbody = gameObject.GetComponent<Rigidbody>();
