@@ -68,7 +68,7 @@ public class AccelerationVector : MonoBehaviour
     {
         accelerationVector = _accelerationExtraporlator.AccelerationVector;
         Vector3 accelerationNormalized = accelerationVector.normalized;
-        if(accelerationNormalized.z == 0) // For when only 2D motion occurs
+        if(accelerationNormalized.z <= 0.000001f) // For when only 2D motion occurs
         {
             float angleXtoYRadians = Mathf.Atan2(accelerationNormalized.y, accelerationNormalized.x);
             _vectorArrowTransformComponent.rotation = new Quaternion(0, 0, Mathf.Sin(angleXtoYRadians / 2), Mathf.Cos(angleXtoYRadians / 2));
