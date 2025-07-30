@@ -7,7 +7,7 @@ using UnityEngine.Animations;
 public class AccelerationVector : MonoBehaviour
 
 {
-    private AccelerationTracker _accelerationExtraporlator;
+    private AccelerationTracker _accelerationTracker;
     public GameObject vectorArrow;
     private Transform _vectorArrowTransformComponent;
     private vectorArrowObject vectorArrowScriptComponent;
@@ -25,8 +25,7 @@ public class AccelerationVector : MonoBehaviour
     Vector3 accelerationVector;
     void Start()
     {
-        _accelerationExtraporlator = gameObject.GetComponent<AccelerationTracker>();
-
+        _accelerationTracker = gameObject.GetOrAddComponent<AccelerationTracker>();
         if (vectorArrow == null)
         {
             GameObject _vectorArrowAsset = Resources.Load<GameObject>("Prefabs/vectorArrow");
@@ -66,7 +65,7 @@ public class AccelerationVector : MonoBehaviour
     
     void Update()
     {
-        accelerationVector = _accelerationExtraporlator.AccelerationVector;
+        accelerationVector = _accelerationTracker.AccelerationVector;
         Vector3 accelerationNormalized = accelerationVector.normalized;
         if(accelerationNormalized.z <= 0.000001f) // For when only 2D motion occurs
         {

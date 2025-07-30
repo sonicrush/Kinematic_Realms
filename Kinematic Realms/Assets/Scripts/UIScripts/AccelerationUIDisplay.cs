@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AccelerationUIDisplay : MonoBehaviour
@@ -17,7 +18,7 @@ public class AccelerationUIDisplay : MonoBehaviour
                 textObject = gameObject.GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        _accelerationExtrapolation = referenceObject.GetComponent<AccelerationTracker>();
+        _accelerationExtrapolation = referenceObject.GetOrAddComponent<AccelerationTracker>();
     }
 
     void Update()
