@@ -124,6 +124,7 @@ public class VelocityGraphUIManager : MonoBehaviour
     void SetupYLabels()
     {
         float height = graphRect.rect.height;
+        yLabelOffset = 0f;
         for (int i = 0; i < numberOfYLabels; i++)
         {
             var label = Instantiate(yLabelPrefab, yLabelParent);
@@ -132,7 +133,9 @@ public class VelocityGraphUIManager : MonoBehaviour
             float normalized = (float)i / (numberOfYLabels - 1);
             float y = normalized * height * yLabelSpacingFactor;
 
-            label.rectTransform.anchoredPosition = new Vector2(yLabelOffset, y);
+            
+            label.rectTransform.anchoredPosition.Set(label.rectTransform.anchoredPosition.x, label.rectTransform.anchoredPosition.y + yLabelOffset);
+            yLabelOffset += 25;
             label.text = (normalized * maxVelocityToShow).ToString("F1");
         }
     }

@@ -5,11 +5,13 @@ using TMPro;
 public class VelocityGraphWorldSpace : MonoBehaviour
 {
     public Transform target; // Object to track
+    public Transform graphRoot;
     public float graphDuration = 5f; // How many seconds to show on X-axis (e.g., 5 seconds)
 
     [Header("Graph World Dimensions")]
     public float graphWidth = 1f; // Desired width of graph in world units
     public float graphHeight = 0.5f; // Desired height of graph in world units
+    public Vector3 graphPosition = new Vector3(0f, 0f, 0f);
 
     [Header("Velocity Scaling")]
     public float maxVelocityToShow = 10f; // The max velocity that will reach the top of the graph (m/s)
@@ -67,6 +69,11 @@ public class VelocityGraphWorldSpace : MonoBehaviour
 
     void Update()
     {
+        if (graphRoot != null)
+        {
+            graphRoot.position = graphPosition;
+        }
+
         timeElapsed += Time.deltaTime;
         updateTimer += Time.deltaTime;
 

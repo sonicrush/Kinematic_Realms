@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class DragAndScroll : MonoBehaviour
 {
-    // Reference to the generated InputActions class (replace BallInputActions with your generated class name if different)
+    // Reference to the generated InputActions class
     private Ball.Ball_Input_Actions inputActions;
 
     private Vector3 curScreenPos;
