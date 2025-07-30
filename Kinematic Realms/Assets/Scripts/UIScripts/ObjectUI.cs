@@ -159,15 +159,7 @@ public class ObjectUI : MonoBehaviour
     private void AssignScreenCanvas()
     {
         //There should always ONLY be one ScreenCanvas.
-        Canvas[] screenCanvasComponents = gameObject.GetComponentsInParent<Canvas>();
-        foreach (Canvas currentCanvas in screenCanvasComponents)
-        {
-            if (currentCanvas.renderMode == RenderMode.ScreenSpaceOverlay)
-            {
-                screenCanvas = currentCanvas.gameObject;
-                break;
-            }
-        }
+        GameObject screenCanvas = GameObject.FindGameObjectWithTag("Screen Canvas");
         if (screenCanvas == null)
         {
             GameObject screenCanvasPrefab = Resources.Load<GameObject>("Prefabs/ScreenCanvas");
