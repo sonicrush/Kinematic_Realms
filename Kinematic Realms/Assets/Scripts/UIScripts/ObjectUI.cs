@@ -36,7 +36,6 @@ public class ObjectUI : MonoBehaviour
     private void AssignVariables()
     {
         leftClick = InputSystem.actions.FindAction("UI/Click");
-
         //Null cases for components and their creation should be handled in their respective toggle methods.
         accelerationVectorComponent = gameObject.GetComponent<AccelerationVector>();
     }
@@ -159,7 +158,7 @@ public class ObjectUI : MonoBehaviour
     private void AssignScreenCanvas()
     {
         //There should always ONLY be one ScreenCanvas.
-        GameObject screenCanvas = GameObject.FindGameObjectWithTag("Screen Canvas");
+        screenCanvas = GameObject.FindGameObjectWithTag("Screen Canvas");
         if (screenCanvas == null)
         {
             GameObject screenCanvasPrefab = Resources.Load<GameObject>("Prefabs/ScreenCanvas");
@@ -167,7 +166,10 @@ public class ObjectUI : MonoBehaviour
         }
         else
         {
-            accelerationUIDisplayObject = screenCanvas.GetComponent<AccelerationUIDisplay>().gameObject;
+            AccelerationUIDisplay uiDisplayComponent = screenCanvas.GetComponent<AccelerationUIDisplay>();
+            if(uiDisplayComponent != null)
+            accelerationUIDisplayObject = uiDisplayComponent.gameObject;
         }
+       
     }
 }
