@@ -620,6 +620,7 @@ GameObject:
   - component: {fileID: 513683057}
   - component: {fileID: 513683058}
   - component: {fileID: 513683059}
+  - component: {fileID: 513683060}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -782,7 +783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47194763e242a5a4fa166225b1e9bcae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vectorArrow: {fileID: 5423139042133308806, guid: 84a7386ba5f508f4f9cbd1904347b05a, type: 3}
+  vectorArrow: {fileID: 0}
   xOffset: 0
   yOffset: 0
   zOffset: 0
@@ -792,6 +793,18 @@ MonoBehaviour:
   vectorMaxMagnitude: 0
   unitScalar: 0
   vectorArrowPrefabPath: Prefabs/vectorArrow
+--- !u!114 &513683060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513683050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a5eef099408abf4eb127f2d555fcaea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &542168978
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,7 +943,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.262024, y: -90}
+  m_AnchoredPosition: {x: -13, y: -90}
   m_SizeDelta: {x: 20.523407, y: 22.876495}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &662315686
@@ -1088,7 +1101,8 @@ MonoBehaviour:
   m_Color: {r: 0, g: 1, b: 0.2719636, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  graphPoints: []
+  graphPoints:
+  - {x: 0, y: 0}
   lineWidth: 2
 --- !u!1 &821532882
 GameObject:
@@ -1804,7 +1818,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1435808224}
-  - component: {fileID: 1435808225}
   m_Layer: 5
   m_Name: GraphContainer
   m_TagString: Untagged
@@ -1833,17 +1846,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 579.3, y: 202.7}
+  m_AnchoredPosition: {x: 580, y: 256}
   m_SizeDelta: {x: 220.6955, y: 148.5166}
   m_Pivot: {x: 0, y: 0}
---- !u!222 &1435808225
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1435808223}
-  m_CullTransparentMesh: 1
 --- !u!1 &1437962360
 GameObject:
   m_ObjectHideFlags: 0
@@ -2137,7 +2142,7 @@ GameObject:
   - component: {fileID: 1767619326}
   - component: {fileID: 1767619327}
   m_Layer: 5
-  m_Name: UI_VGraph
+  m_Name: VGraphUIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2181,12 +2186,13 @@ MonoBehaviour:
   yLabelPrefab: {fileID: 3495704331437306244, guid: 45b164d4745863745a548efdbcf2da26, type: 3}
   xLabelParent: {fileID: 1435808224}
   yLabelParent: {fileID: 1435808224}
+  GraphContainer: {fileID: 1435808223}
   graphDuration: 5
   maxVelocityToShow: 10
   updateRate: 0.1
   numberOfYLabels: 5
   yLabelSpacingFactor: 1
-  yLabelOffset: -40
+  yLabelOffset: -30
   numberOfXLabels: 6
   xLabelSpacingFactor: 1
   xLabelOffset: -20
@@ -2244,7 +2250,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2064150329}
-  - component: {fileID: 2064150328}
   - component: {fileID: 2064150330}
   - component: {fileID: 2064150331}
   - component: {fileID: 2064150332}
@@ -2255,14 +2260,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!222 &2064150328
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064150327}
-  m_CullTransparentMesh: 1
 --- !u!224 &2064150329
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2538,7 +2535,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -0.528, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -116, y: -27}
+  m_AnchoredPosition: {x: -120, y: -28}
   m_SizeDelta: {x: 219.7, y: 54.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2103497027
