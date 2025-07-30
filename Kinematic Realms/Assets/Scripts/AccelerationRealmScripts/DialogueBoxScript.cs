@@ -52,6 +52,9 @@ public class DialogueBoxScript : MonoBehaviour
     public GameObject quad;
     public MeshCollider quadMeshCollider;
 
+    public Material orange;
+    public Material red;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -100,7 +103,7 @@ public class DialogueBoxScript : MonoBehaviour
         ShowPrevious();
         previousButton.onClick.AddListener(EventZero);
         nextButton.onClick.AddListener(EventTwo);
-        dialogueText.text = "A orange vector will show the direction of acceleration.\r\nNotice how from rest, this ball begins to go faster and faster.\r\n(Press play to see!)";
+        dialogueText.text = "A blue vector will show the direction of acceleration.\r\nNotice how from rest, this ball begins to go faster and faster.\r\n(Press play to see!)";
 
         ShowPlay();
         PlayButton.onClick.AddListener(PhysicsEventOne);
@@ -404,6 +407,8 @@ public class DialogueBoxScript : MonoBehaviour
             cubeTransform.SetPositionAndRotation(new Vector3(-7.33f, 0.58f, -10.78f), Quaternion.identity);
             Cube.GetComponent<ObjectUI>().ToggleAccelerationVectorComponent(true);
             
+           
+
             StartCoroutine(elapseSeconds(2.4f));
             
             StartCoroutine(ApplyForce(0.3f));
@@ -417,6 +422,8 @@ public class DialogueBoxScript : MonoBehaviour
             Time.timeScale = 1.0f;
             cubeTransform.SetPositionAndRotation(new Vector3(-7.33f, 0.58f, -10.78f), Quaternion.identity);
             Cube.GetComponent<ObjectUI>().ToggleAccelerationVectorComponent(true);
+          
+            
             cubeRigidBody.linearVelocity = new Vector3(12, 0, 0);
 
             StartCoroutine(elapseSeconds(2.4f));
@@ -431,7 +438,9 @@ public class DialogueBoxScript : MonoBehaviour
             Time.timeScale = 1.0f;
             cubeTransform.SetPositionAndRotation(new Vector3(-7.33f, 0.58f, -10.78f), Quaternion.identity);
             Cube.GetComponent<ObjectUI>().ToggleAccelerationVectorComponent(true);
-            //Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
+            Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
+            
+            
 
             StartCoroutine(elapseSeconds(2.4f));
 
@@ -444,7 +453,8 @@ public class DialogueBoxScript : MonoBehaviour
             Time.timeScale = 1.0f;
             cubeTransform.SetPositionAndRotation(new Vector3(-7.33f, 0.58f, -10.78f), Quaternion.identity);
             Cube.GetComponent<ObjectUI>().ToggleAccelerationVectorComponent(true);
-            //Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
+            Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
+            
             cubeRigidBody.linearVelocity = new Vector3(12, 0, 0);
             
             StartCoroutine(elapseSeconds(2.4f));
@@ -461,7 +471,9 @@ public class DialogueBoxScript : MonoBehaviour
             cubeTransform.SetPositionAndRotation(new Vector3(-4.56f, 5.48f, -10.78f), Quaternion.identity);
             Cube.GetComponent<ObjectUI>().ToggleAccelerationVectorComponent(true);
             Cube.GetComponent<ObjectUI>().ToggleAccelerationUIComponent(true);
-            //Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
+            Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
+            
+            
 
 
             StartCoroutine(elapseSeconds(2.4f));
@@ -477,7 +489,8 @@ public class DialogueBoxScript : MonoBehaviour
             Time.timeScale = 1.0f;
             cubeTransform.SetPositionAndRotation(new Vector3(-7.33f, 0.58f, -10.78f), Quaternion.identity);
             Cube.GetComponent<ObjectUI>().ToggleAccelerationVectorComponent(true);
-            //Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
+            Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
+           
             List<Material> materials = new List<Material> { grassMaterial };
             quad.GetComponent<MeshRenderer>().SetMaterials(materials);
             quadMeshCollider.material = grassPhysicsMaterial;

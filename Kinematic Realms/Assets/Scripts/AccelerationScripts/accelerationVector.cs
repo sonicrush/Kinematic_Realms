@@ -20,11 +20,14 @@ public class AccelerationVector : MonoBehaviour
     public float vectorInitialLength; // Should be set for when it's no longer visible at magnitude 0
     public float vectorMaxMagnitude;
     public float unitScalar; // TODO: Implement dynamic scaling
+    public Material vectorArrowMaterial;
 
 
     Vector3 accelerationVector;
     void Start()
     {
+
+        
         _accelerationTracker = gameObject.GetOrAddComponent<AccelerationTracker>();
         if (vectorArrow == null)
         {
@@ -50,7 +53,7 @@ public class AccelerationVector : MonoBehaviour
         }
         else if(vectorMaxMagnitude == 0)
         {
-            vectorMaxMagnitude = 1;
+            vectorMaxMagnitude = 2;
         }
 
         if(unitScalar == 0)
@@ -58,13 +61,17 @@ public class AccelerationVector : MonoBehaviour
             unitScalar = 1;
         }
 
-        
+        if (vectorArrowMaterial != null)
+        {
+            vectorArrow.GetComponent<MeshRenderer>().material = vectorArrowMaterial;
+        }
 
     }
 
     
     void Update()
     {
+        
         accelerationVector = _accelerationTracker.AccelerationVector;
         Vector3 accelerationNormalized = accelerationVector.normalized;
         if(accelerationNormalized.z == 0) // For when only 2D motion occurs

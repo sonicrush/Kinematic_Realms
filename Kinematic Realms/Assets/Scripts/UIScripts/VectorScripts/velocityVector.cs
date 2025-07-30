@@ -16,6 +16,7 @@ public class velocityVector : MonoBehaviour
     public float vectorMaxMagnitude;
     public float unitScalar; // TODO: Implement dynamic scaling
     public string vectorArrowPrefabPath = "Prefabs/vectorArrow";
+    public Material vectorArrowMaterial;
 
 
     private Vector3 velocityVector3;
@@ -39,7 +40,7 @@ public class velocityVector : MonoBehaviour
             }
         }
         _vectorArrowTransformComponent = vectorArrow.GetComponent<Transform>();
-        print(_vectorArrowTransformComponent);
+        
         vectorArrowScriptComponent = vectorArrow.GetComponent<vectorArrowObject>();
         vectorArrowScriptComponent.stemLength = vectorInitialLength;
         if (dontChangeByMagnitude)
@@ -56,8 +57,11 @@ public class velocityVector : MonoBehaviour
             unitScalar = 1;
         }
 
-
-
+        vectorMaxMagnitude = 3f;
+        if (vectorArrowMaterial != null)
+        {
+            vectorArrow.GetComponent<MeshRenderer>().material = vectorArrowMaterial;
+        }
     }
 
 

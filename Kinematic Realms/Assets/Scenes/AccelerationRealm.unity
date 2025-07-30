@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: e11f5b66aad75483b8cd16ee18a0c917, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 123caa41e84e041d0bd65bb3ae888dd1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -901,6 +901,8 @@ MonoBehaviour:
   litMaterial: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   quad: {fileID: 1570578989}
   quadMeshCollider: {fileID: 1570578990}
+  orange: {fileID: 0}
+  red: {fileID: 0}
 --- !u!224 &797356635 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 633886031995987448, guid: 5bf994d8468c447639e198e252f5a097, type: 3}
@@ -1034,6 +1036,9 @@ GameObject:
   - component: {fileID: 873622304}
   - component: {fileID: 873622303}
   - component: {fileID: 873622305}
+  - component: {fileID: 873622306}
+  - component: {fileID: 873622308}
+  - component: {fileID: 873622307}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Cube
@@ -1185,6 +1190,65 @@ MonoBehaviour:
   xOffsetFromObject: 0
   yOffsetFromObject: 0
   zOffsetFromObject: 0
+  accelerationVectorComponent: {fileID: 0}
+  velocityVectorComponent: {fileID: 0}
+--- !u!114 &873622306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873622298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce59e0cd202533f4d8ef2d501024ecc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &873622307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873622298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47194763e242a5a4fa166225b1e9bcae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vectorArrow: {fileID: 0}
+  xOffset: 0
+  yOffset: 0
+  zOffset: 0
+  dontAttachToObject: 0
+  dontChangeByMagnitude: 0
+  vectorInitialLength: 0
+  vectorMaxMagnitude: 0
+  unitScalar: 0
+  vectorArrowPrefabPath: Prefabs/vectorArrow
+  vectorArrowMaterial: {fileID: 2100000, guid: c259ef79fd7a5f44a9465063e307799a, type: 2}
+--- !u!114 &873622308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873622298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02824d2882d46443baf955ac934b981e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vectorArrow: {fileID: 0}
+  xOffset: 0
+  yOffset: 0
+  zOffset: 0
+  dontAttachToObject: 0
+  dontChangeByMagnitude: 0
+  vectorInitialLength: 0
+  vectorMaxMagnitude: 0
+  unitScalar: 0
+  vectorArrowMaterial: {fileID: 2100000, guid: 1535368b200b323468783abb6e250bb8, type: 2}
 --- !u!1 &1196150546
 GameObject:
   m_ObjectHideFlags: 0

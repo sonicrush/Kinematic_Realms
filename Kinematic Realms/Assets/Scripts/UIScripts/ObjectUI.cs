@@ -15,7 +15,9 @@ public class ObjectUI : MonoBehaviour
     [System.NonSerialized] public GameObject worldSpaceUI;
 
     private GameObject accelerationUIDisplayObject;
-    private AccelerationVector accelerationVectorComponent;
+    public AccelerationVector accelerationVectorComponent;
+
+    public velocityVector velocityVectorComponent; 
 
     private InputAction leftClick;
     private bool secondsElapsed;
@@ -38,6 +40,8 @@ public class ObjectUI : MonoBehaviour
         leftClick = InputSystem.actions.FindAction("UI/Click");
         //Null cases for components and their creation should be handled in their respective toggle methods.
         accelerationVectorComponent = gameObject.GetComponent<AccelerationVector>();
+        velocityVectorComponent = gameObject.GetComponent<velocityVector>();
+
     }
 
     private void AssignUIToggles()
@@ -46,13 +50,16 @@ public class ObjectUI : MonoBehaviour
         //Location depends on the order of children within the Image object.
         int accelerationUIToggleLocation = 0;
         int accelerationVectorToggleLocation = 1;
+        int velocityVectorToggleLocation = 2;
 
         Toggle accelerationUIToggle = toggles[accelerationUIToggleLocation];
         Toggle accelerationVectorToggle = toggles[accelerationVectorToggleLocation];
+        Toggle velocityVectorToggle = toggles[velocityVectorToggleLocation];
 
         //Toggle methods should handle null component cases.
         accelerationUIToggle.onValueChanged.AddListener(ToggleAccelerationUIComponent);
         accelerationVectorToggle.onValueChanged.AddListener(ToggleAccelerationVectorComponent);
+        velocityVectorToggle.onValueChanged.AddListener(ToggleVelocityVectorComponent);
     }
 
     //UI Toggle Methods
@@ -78,6 +85,16 @@ public class ObjectUI : MonoBehaviour
             return;
         }
         accelerationVectorComponent.vectorArrow.SetActive(isChecked);
+    }
+    public void ToggleVelocityVectorComponent(bool isChecked)
+    {
+        print("TOGGLED");
+        if (velocityVectorComponent == null)
+        {
+            velocityVectorComponent = gameObject.AddComponent<velocityVector>();
+            return;
+        }
+        velocityVectorComponent.vectorArrow.SetActive(isChecked);
     }
 
 
