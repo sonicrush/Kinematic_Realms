@@ -2,27 +2,32 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
+
 
 public class PauseMenu : MonoBehaviour
 {
     public GameObject pauseMenu;
     public bool isPaused;
     private bool wasPreviouslyFrozen;
-    
+    private InputAction escape;
+    private bool menuLock;
     void Start()
     {
         pauseMenu.SetActive(false);
         isPaused = false;
-
+        escape = InputSystem.actions.FindAction("Player/Escape");
     }
 
     void Update()
     {
-        print(Input.GetKeyDown(KeyCode.Escape));
-        if (Input.GetKeyDown(KeyCode.Escape))
+        
+        if (escape.IsPressed() && !menuLock)
         {
+            StartCoroutine(waitForSeconds(1f));
             if (isPaused)
             {
+
                 resumeGame();
             }
             else
@@ -55,5 +60,11 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
 
+    }
+    IEnumerator waitForSeconds(float seconds)
+    {
+        menuLock = true;
+        yield return new WaitForSeconds(seconds);
+        menuLock = false;
     }
 }
