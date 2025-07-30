@@ -56,7 +56,7 @@ public class ObjectUI : MonoBehaviour
     }
 
     //UI Toggle Methods
-    void ToggleAccelerationUIComponent(bool isChecked)
+    public void ToggleAccelerationUIComponent(bool isChecked)
     {
         if (accelerationUIDisplayObject == null)
         {
@@ -70,7 +70,7 @@ public class ObjectUI : MonoBehaviour
 
     }
 
-    void ToggleAccelerationVectorComponent(bool isChecked)
+    public void ToggleAccelerationVectorComponent(bool isChecked)
     {
         if (accelerationVectorComponent == null)
         {
@@ -97,7 +97,7 @@ public class ObjectUI : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.rigidbody.gameObject == gameObject)
+                if (hit.rigidbody != null && hit.rigidbody.gameObject == gameObject)
                     StartCoroutine(toggleObjectUI());
             }
         }
