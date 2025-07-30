@@ -487,7 +487,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1390536531}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: bad793bbc3337e24091c87b1667d59ab, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -581,8 +581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7971be2022b2dc4baaad155e336b55a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 0}
-  _force: {x: 0, y: 0, z: 0}
 --- !u!54 &1390536537
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -626,19 +624,6 @@ MonoBehaviour:
   xOffsetFromObject: 0
   yOffsetFromObject: 0
   zOffsetFromObject: 0
-  accelerationUIDisplayObject: {fileID: 0}
-  accelerationVectorComponent: {fileID: 0}
-  leftClick:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 77e4d617-334d-42cc-8a00-18df3d94300d
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  secondsElapsed: 0
-  isToggleObjectUIRunning: 0
 --- !u!114 &1390536539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,52 +636,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5eef099408abf4eb127f2d555fcaea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rigidbody: {fileID: 0}
-  _up:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: f3edc0ca-1467-4390-8a1e-d628dcdc96e2
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  _down:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: e2499c19-9d4b-4fd5-82a6-3d24922c26c0
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  _left:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: ed22e108-f1da-4949-9776-2f2ed6c63f76
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  _right:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 395a2a9b-ed51-4811-a688-f3a683b98ec7
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  _jump:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 9a5a0fd3-ba77-43bc-99ff-1a24dd4acb89
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
 --- !u!114 &1390536540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,10 +648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02824d2882d46443baf955ac934b981e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _accelerationExtraporlator: {fileID: 0}
   vectorArrow: {fileID: 0}
-  _vectorArrowTransformComponent: {fileID: 0}
-  vectorArrowScriptComponent: {fileID: 0}
   xOffset: 0
   yOffset: 0
   zOffset: 0
@@ -721,7 +657,6 @@ MonoBehaviour:
   vectorInitialLength: 0
   vectorMaxMagnitude: 0
   unitScalar: 0
-  accelerationVector: {x: 0, y: 0, z: 0}
 --- !u!1 &1412591042
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +792,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1566089776}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e9c3455af7179034f804b8ccb0bc51e4, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
