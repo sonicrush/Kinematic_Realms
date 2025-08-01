@@ -62,6 +62,9 @@ public class AccelerationDialogueBox : MonoBehaviour
     public GameObject accelerationGraphTwo;
     public GameObject accelerationGraphThree;
 
+    public GameObject accelerationKeyword1;
+    public GameObject accelerationKeyword2;
+
     public GameObject mainCamera;
 
 
@@ -170,6 +173,7 @@ public class AccelerationDialogueBox : MonoBehaviour
         AddFromOriginalDialogueSize(20, 0);
         nextButton.onClick.AddListener(() =>
         {
+            ShowAccelerationKeywords();
             AddFromOriginalDialogueSize(200, 0);
         });
         previousButton.onClick.AddListener(() =>
@@ -181,19 +185,22 @@ public class AccelerationDialogueBox : MonoBehaviour
     //Making changes to the event system is difficult due to the lack of a proper system.
     void EventFiveExtended()
     {
+        ShowAccelerationKeywords();
         RemoveButtonListeners();
         previousButton.onClick.AddListener(EventFive);
         nextButton.onClick.AddListener(EventFiveExtendedTwo);
-        dialogueText.text = "Lets look at a bit of the math behind acceleration. Words that are orange can be clicked on to view more details about them." +
-            "\n\nAfter clicking on acceleration, then click on \"Formulas\" to see the formula. You can continue clicking on the orange to further expand the formula. Once you've done that, click next.";
+        dialogueText.text = "Lets look at a bit of the math on                  . Words that are orange can be clicked on to view more details about them." +
+            "\n\nAfter clicking on                  , then click on \"Formulas\" to see the formula. You can continue clicking on the orange to further expand the formula. Once you've done that, click next.";
         
         nextButton.onClick.AddListener(() =>
         {
             AddFromOriginalDialogueSize(220, 0);
+            HideAccelerationKeywords();
         });
         previousButton.onClick.AddListener(() =>
         {
             AddFromOriginalDialogueSize(20, 0);
+            HideAccelerationKeywords();
         });
         //Backup switch : Acceleration is commonly calculated by velocityFinal - velocityInitial / s, or in shorthand Vf - Vi / s
     }
@@ -201,7 +208,7 @@ public class AccelerationDialogueBox : MonoBehaviour
     void EventFiveExtendedTwo()
     {
         RemoveButtonListeners();
-        previousButton.onClick.AddListener(EventFive);
+        previousButton.onClick.AddListener(EventFiveExtended);
         nextButton.onClick.AddListener(EventFiveExtendedThree);
         nextButton.onClick.AddListener(() =>
         {
@@ -617,5 +624,16 @@ public class AccelerationDialogueBox : MonoBehaviour
     void AddFromOriginalCameraTransform(float x, float y, float z)
     {
         mainCamera.transform.position = new Vector3(0.27f + x, 1.5f + y, -19.28f + z);
+    }
+
+    void ShowAccelerationKeywords()
+    {
+        accelerationKeyword1.SetActive(true);
+        accelerationKeyword2.SetActive(true);
+    }
+    void HideAccelerationKeywords()
+    {
+        accelerationKeyword1.SetActive(false);
+        accelerationKeyword2.SetActive(false);
     }
 }
