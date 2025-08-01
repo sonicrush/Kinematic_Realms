@@ -13,11 +13,11 @@ public class MovementTest : MonoBehaviour
     void Start()
     {
         _rigidbody = gameObject.GetComponent<Rigidbody>();
-        _up = InputSystem.actions.FindAction("Player/Forward");
-        _down = InputSystem.actions.FindAction("Player/Backward");
+        _up = InputSystem.actions.FindAction("Player/Up");
+        _down = InputSystem.actions.FindAction("Player/Down");
         _left = InputSystem.actions.FindAction("Player/Left");
         _right = InputSystem.actions.FindAction("Player/Right");
-        _jump = InputSystem.actions.FindAction("Player/Up");
+        _jump = InputSystem.actions.FindAction("Player/Jump1");
     }
     void FixedUpdate()
     {
