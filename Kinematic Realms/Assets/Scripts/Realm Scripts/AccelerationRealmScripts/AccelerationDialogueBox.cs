@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
 using static UnityEngine.Rendering.DebugUI.Table;
 
-public class DialogueBoxScript : MonoBehaviour
+public class AccelerationDialogueBox : MonoBehaviour
 {
     public RectTransform boxRect;
     private float originalWidth;
@@ -54,6 +54,16 @@ public class DialogueBoxScript : MonoBehaviour
 
     public Material orange;
     public Material red;
+
+    public GameObject velocityGraphOne;
+    public GameObject velocityGraphTwo;
+    public GameObject velocityGraphThree;
+    public GameObject accelerationGraphOne;
+    public GameObject accelerationGraphTwo;
+    public GameObject accelerationGraphThree;
+
+    public GameObject mainCamera;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -103,7 +113,7 @@ public class DialogueBoxScript : MonoBehaviour
         ShowPrevious();
         previousButton.onClick.AddListener(EventZero);
         nextButton.onClick.AddListener(EventTwo);
-        dialogueText.text = "A blue vector will show the direction of acceleration.\r\nNotice how from rest, this ball begins to go faster and faster.\r\n(Press play to see!)";
+        dialogueText.text = "A white vector will show the direction of acceleration.\nNotice how from rest, this ball begins to go faster and faster.\r\n(Press play to see!)";
 
         ShowPlay();
         PlayButton.onClick.AddListener(PhysicsEventOne);
@@ -127,6 +137,7 @@ public class DialogueBoxScript : MonoBehaviour
         previousButton.onClick.AddListener(EventTwo);
         nextButton.onClick.AddListener(EventFour);
         AddFromOriginalDialogueSize(100, 0);
+        ShowPlay();
         nextButton.onClick.AddListener(() =>
         {
             AddFromOriginalDialogueSize(0, 0);
@@ -136,7 +147,8 @@ public class DialogueBoxScript : MonoBehaviour
             AddFromOriginalDialogueSize(0, 0);
         });
         PlayButton.onClick.AddListener(PhysicsEventThree);
-        dialogueText.text = "What you just observed is the effect of acceleration.\r\nAcceleration is defined as the change in velocity over time.\r\n\nLet's repeat the first example, but now with a velocity vector in red.";
+        dialogueText.text = "What you just observed is the effect of acceleration.\r\nAcceleration is defined as the change in velocity over time." +
+            "\n\nLet's repeat the first example, but now with a velocity vector in red.";
         
 
     }
@@ -153,40 +165,96 @@ public class DialogueBoxScript : MonoBehaviour
     {
         RemoveButtonListeners();
         previousButton.onClick.AddListener(EventFour);
+        nextButton.onClick.AddListener(EventFiveExtended);
+        dialogueText.text = "Notice how the velocity vector grew in the first example, and shrank in the second.\n\nAcceleration is what caused this change in velocity.\r\n";
+        AddFromOriginalDialogueSize(20, 0);
+        nextButton.onClick.AddListener(() =>
+        {
+            AddFromOriginalDialogueSize(200, 0);
+        });
+        previousButton.onClick.AddListener(() =>
+        {
+            AddFromOriginalDialogueSize(0, 0);
+        });
+    }
+
+    //Making changes to the event system is difficult due to the lack of a proper system.
+    void EventFiveExtended()
+    {
+        RemoveButtonListeners();
+        previousButton.onClick.AddListener(EventFive);
+        nextButton.onClick.AddListener(EventFiveExtendedTwo);
+        dialogueText.text = "Lets look at a bit of the math behind acceleration. Words that are orange can be clicked on to view more details about them." +
+            "\n\nAfter clicking on acceleration, then click on \"Formulas\" to see the formula. You can continue clicking on the orange to further expand the formula. Once you've done that, click next.";
+        
+        nextButton.onClick.AddListener(() =>
+        {
+            AddFromOriginalDialogueSize(220, 0);
+        });
+        previousButton.onClick.AddListener(() =>
+        {
+            AddFromOriginalDialogueSize(20, 0);
+        });
+        //Backup switch : Acceleration is commonly calculated by velocityFinal - velocityInitial / s, or in shorthand Vf - Vi / s
+    }
+
+    void EventFiveExtendedTwo()
+    {
+        RemoveButtonListeners();
+        previousButton.onClick.AddListener(EventFive);
+        nextButton.onClick.AddListener(EventFiveExtendedThree);
+        nextButton.onClick.AddListener(() =>
+        {
+            AddFromOriginalDialogueSize(450, 0);
+        });
+        previousButton.onClick.AddListener(() =>
+        {
+            AddFromOriginalDialogueSize(200, 0);
+        });
+        dialogueText.text = "VelocityInitial and VelocityFinal are the velocities at the final time of the measurement, and the initial time of measurement respectively." +
+            "\n\nTimeFinal and TimeInitial are defined in the same way, being the final time measurement and initial time measurement respectively.";
+    }
+
+    void EventFiveExtendedThree()
+    {
+
+        RemoveButtonListeners();
+        previousButton.onClick.AddListener(EventFiveExtendedTwo);
         nextButton.onClick.AddListener(EventSix);
-        dialogueText.text = "Acceleration is what causes velocity to grow or diminish.\r\nOne formula for acceleration is\n Velocityfinal - Velocityinitial / seconds\n or in shorter terms, Vf - Vi / s\r\n\nThe resulting unit from this calculation is meters/seconds ^2, or more commonly, m/s^2 \r\n";
-        AddFromOriginalDialogueSize(200, 0);
         nextButton.onClick.AddListener(() =>
         {
             AddFromOriginalDialogueSize(0, 0);
         });
         previousButton.onClick.AddListener(() =>
         {
-            AddFromOriginalDialogueSize(0, 0);
-            ShowPlay();
+            AddFromOriginalDialogueSize(220, 0);
         });
+        dialogueText.text = "This formula assumes that during the time between velocity initial and velocity final, the acceleration was constant." +
+            " Of course, that won't be true in all scenarios, therefore measuring within the shortest time frame is recommended." +
+            "\nThe best practice is to find the derivative of velocity, dv/vt, which will give you acceleration.\n\nYou may now close the formula window if you wish before continuing.";
     }
     void EventSix()
     {
         RemoveButtonListeners();
-        previousButton.onClick.AddListener(EventFive);
+        previousButton.onClick.AddListener(EventFiveExtendedThree);
         nextButton.onClick.AddListener(EventSeven);
-        dialogueText.text = "Now let's observe some velocity graphs.\n What do you think is the acceleration if this is the velocity graph?";
+        dialogueText.text = "Now let's observe some velocity graphs.\nWhat do you think is the acceleration if this is the velocity graph?";
         nextText.text = "Show the answer!";
+        instantiateGraph(velocityGraphOne);
         AddFromOriginalNextSize(10, 20);
-        //instantiateGraph();
         previousButton.onClick.AddListener(() =>
         {
-            AddFromOriginalNextSize(0, 0);
+            AddFromOriginalDialogueSize(450, 0);
             nextText.text = "Next";
-            //destroyGraph();
+            destroyGraph(velocityGraphOne);
+            AddFromOriginalNextSize(0, 0);
 
         });
         nextButton.onClick.AddListener(() =>
         {
-            AddFromOriginalNextSize(0, 0);
             nextText.text = "Next";
-            //destroyGraph();
+            destroyGraph(velocityGraphOne);
+            AddFromOriginalNextSize(0, 0);
         });
 
 
@@ -196,30 +264,39 @@ public class DialogueBoxScript : MonoBehaviour
         dialogueText.text = "The acceleration of this object is 0. Since velocity does not change over time, there is no acceleration.";
         nextText.text = "Next";
         RemoveButtonListeners();
-        previousButton.onClick.AddListener(EventSix);
-        nextButton.onClick.AddListener(EventEight);
+        instantiateGraph(accelerationGraphOne);
+        previousButton.onClick.AddListener(() =>
+        {
+            destroyGraph(accelerationGraphOne);
+            EventSix();
+        });
+        nextButton.onClick.AddListener(() =>
+        {
+            destroyGraph(accelerationGraphOne);
+            EventEight();
+        });
 
     }
     void EventEight()
     {
         dialogueText.text = "What about this one's acceleration?";
-        //instantiateGraph();
         nextText.text = "Show the answer!";
         AddFromOriginalNextSize(10, 20);
         RemoveButtonListeners();
         previousButton.onClick.AddListener(EventSeven);
+        instantiateGraph(velocityGraphTwo);
         previousButton.onClick.AddListener(() =>
         {
             AddFromOriginalNextSize(0, 0);
             nextText.text = "Next";
-            //destroyGraph();
+            destroyGraph(velocityGraphTwo);
 
         });
         nextButton.onClick.AddListener(() =>
         {
             AddFromOriginalNextSize(0, 0);
             nextText.text = "Next";
-            //destroyGraph();
+            destroyGraph(velocityGraphTwo);
 
         });
         nextButton.onClick.AddListener(EventNine);
@@ -231,8 +308,17 @@ public class DialogueBoxScript : MonoBehaviour
         nextText.text = "Next";
         dialogueText.text = "The acceleration is 1 m/s^2, as every second, the velocity increases by 1 m/s every second.";
         RemoveButtonListeners();
-        previousButton.onClick.AddListener(EventEight);
-        nextButton.onClick.AddListener(Event10);
+        instantiateGraph(accelerationGraphTwo);
+        previousButton.onClick.AddListener(() =>
+        {
+            destroyGraph(accelerationGraphTwo);
+            EventEight();
+        });
+        nextButton.onClick.AddListener(() =>
+        {
+            destroyGraph(accelerationGraphTwo);
+            Event10();
+        });
 
     }
     void Event10()
@@ -243,19 +329,19 @@ public class DialogueBoxScript : MonoBehaviour
         previousButton.onClick.AddListener(EventNine);
         nextButton.onClick.AddListener(Event11);
         AddFromOriginalNextSize(10, 20);
-        //instantiateGraph();
+        instantiateGraph(velocityGraphThree);
         previousButton.onClick.AddListener(() =>
         {
             AddFromOriginalNextSize(0, 0);
             nextText.text = "Next";
-            //destroyGraph();
+            destroyGraph(velocityGraphThree);
 
         });
         nextButton.onClick.AddListener(() =>
         {
             AddFromOriginalNextSize(0, 0);
             nextText.text = "Next";
-            //destroyGraph();
+            destroyGraph(velocityGraphThree);
 
         });
 
@@ -265,23 +351,47 @@ public class DialogueBoxScript : MonoBehaviour
         dialogueText.text = "The acceleration is -2 m/s^2, as velocity decreases 2 m/s every second.";
         nextText.text = "Next";
         RemoveButtonListeners();
-        previousButton.onClick.AddListener(Event10);
-        nextButton.onClick.AddListener(Event12);
+        instantiateGraph(accelerationGraphThree);
+        previousButton.onClick.AddListener(() => 
+        {
+            destroyGraph(accelerationGraphThree);
+            Event10(); 
+        });
+        nextButton.onClick.AddListener(() => 
+        {
+            destroyGraph(accelerationGraphThree);
+            Event12(); 
+        });
 
     }
     void Event12()
     {
         AddFromOriginalDialogueSize(160, 0);
-        dialogueText.text = "Acceleration can be seen occurring naturally in many ways. One of these is Gravity. Gravity <b>constantly</b> pulls all objects on earth towards it at approximately 9.8 m/s^2.\r\n\nLet's observe that with this display as this ball falls.";
+        dialogueText.text = "Acceleration can be seen occurring naturally in many ways. One of these is Gravity. Gravity <b>constantly</b> pulls all objects on earth towards it at approximately 9.8 m/s^2." +
+            "\nLet's observe that with the display on the top right as this ball falls.";
         RemoveButtonListeners();
         previousButton.onClick.AddListener(Event11);
         nextButton.onClick.AddListener(Event13);
+        Cube.GetComponent<ObjectUI>().ToggleAccelerationUIComponent(true);
         previousButton.onClick.AddListener(() =>
         {
+            AddFromOriginalCameraTransform(0, 0, 0);
             AddFromOriginalDialogueSize(0, 0);
+            Cube.GetComponent<ObjectUI>().ToggleAccelerationUIComponent(false);
+            HidePlay();
+        });
+        nextButton.onClick.AddListener(() =>
+        {
+            AddFromOriginalCameraTransform(0, 0, 0);
+           
         });
         ShowPlay();
-        PlayButton.onClick.AddListener(PhysicsEventFive);
+        PlayButton.onClick.AddListener(() => 
+        {
+            PhysicsEventFive();
+            AddFromOriginalCameraTransform(0, 8, -20);
+
+        });
 
     }
     void Event13()
@@ -310,56 +420,6 @@ public class DialogueBoxScript : MonoBehaviour
         previousButton.onClick.AddListener(ShowNext);
         
         
-
-    }
-    void Event15()
-    {
-        RemoveButtonListeners();
-        previousButton.onClick.AddListener(Event14);
-        nextButton.onClick.AddListener(Event16);
-
-    }
-    void Event16()
-    {
-        RemoveButtonListeners();
-        previousButton.onClick.AddListener(Event15);
-        nextButton.onClick.AddListener(Event17);
-
-    }
-    void Event17()
-    {
-        RemoveButtonListeners();
-        previousButton.onClick.AddListener(Event16);
-        nextButton.onClick.AddListener(Event18);
-
-    }
-    void Event18()
-    {
-        RemoveButtonListeners();
-        previousButton.onClick.AddListener(Event17);
-        nextButton.onClick.AddListener(Event19);
-
-    }
-    void Event19()
-    {
-        RemoveButtonListeners();
-        previousButton.onClick.AddListener(Event18);
-        nextButton.onClick.AddListener(Event20);
-
-    }
-    void Event20()
-    {
-        RemoveButtonListeners();
-        previousButton.onClick.AddListener(Event19);
-        nextButton.onClick.AddListener(EventFinal);
-
-    }
-    void EventFinal()
-    {
-        RemoveButtonListeners();
-        previousButton.onClick.AddListener(Event20);
-        previousButton.onClick.AddListener(ShowNext);
-        HideNext();
 
     }
     void HideNext()
@@ -424,7 +484,7 @@ public class DialogueBoxScript : MonoBehaviour
             Cube.GetComponent<ObjectUI>().ToggleAccelerationVectorComponent(true);
           
             
-            cubeRigidBody.linearVelocity = new Vector3(12, 0, 0);
+            cubeRigidBody.linearVelocity = new Vector3(11, 0, 0);
 
             StartCoroutine(elapseSeconds(2.4f));
 
@@ -455,7 +515,7 @@ public class DialogueBoxScript : MonoBehaviour
             Cube.GetComponent<ObjectUI>().ToggleAccelerationVectorComponent(true);
             Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
             
-            cubeRigidBody.linearVelocity = new Vector3(12, 0, 0);
+            cubeRigidBody.linearVelocity = new Vector3(11, 0, 0);
             
             StartCoroutine(elapseSeconds(2.4f));
            
@@ -468,9 +528,8 @@ public class DialogueBoxScript : MonoBehaviour
         if (!applyingForce) 
         { 
             Time.timeScale = 1.0f;
-            cubeTransform.SetPositionAndRotation(new Vector3(-4.56f, 5.48f, -10.78f), Quaternion.identity);
+            cubeTransform.SetPositionAndRotation(new Vector3(-20.56f, 20.48f, -10.78f), Quaternion.identity);
             Cube.GetComponent<ObjectUI>().ToggleAccelerationVectorComponent(true);
-            Cube.GetComponent<ObjectUI>().ToggleAccelerationUIComponent(true);
             Cube.GetComponent<ObjectUI>().ToggleVelocityVectorComponent(true);
             
             
@@ -545,5 +604,18 @@ public class DialogueBoxScript : MonoBehaviour
         yield break;
 
 
+    }
+    void instantiateGraph(GameObject graph)
+    {
+        graph.SetActive(true);
+    }
+    void destroyGraph(GameObject graph)
+    {
+        graph.SetActive(false);
+    }
+
+    void AddFromOriginalCameraTransform(float x, float y, float z)
+    {
+        mainCamera.transform.position = new Vector3(0.27f + x, 1.5f + y, -19.28f + z);
     }
 }

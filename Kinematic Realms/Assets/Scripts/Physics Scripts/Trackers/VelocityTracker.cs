@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -6,7 +5,7 @@ public class VelocityTracker : MonoBehaviour
 {
     private Rigidbody _rigidbody;
     [System.NonSerialized] public Vector3 velocityVector;
-    private Vector3 velocity;
+    //velocityVector should be used when velocity data is needed.
 
     void Start()
     {

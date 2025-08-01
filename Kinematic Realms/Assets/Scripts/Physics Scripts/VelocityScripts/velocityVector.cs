@@ -18,6 +18,8 @@ public class velocityVector : MonoBehaviour
     public string vectorArrowPrefabPath = "Prefabs/vectorArrow";
     public Material vectorArrowMaterial;
 
+    public bool disableVectorOnSpawn;
+
 
     private Vector3 velocityVector3;
     void Start()
@@ -61,6 +63,10 @@ public class velocityVector : MonoBehaviour
         if (vectorArrowMaterial != null)
         {
             vectorArrow.GetComponent<MeshRenderer>().material = vectorArrowMaterial;
+        }
+        if (disableVectorOnSpawn)
+        {
+            vectorArrow.SetActive(false);
         }
     }
 

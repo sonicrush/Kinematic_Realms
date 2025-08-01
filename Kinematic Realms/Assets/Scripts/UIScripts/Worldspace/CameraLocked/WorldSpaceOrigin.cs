@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Event1 : MonoBehaviour
+public class WorldSpaceOrigin : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

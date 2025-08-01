@@ -88,7 +88,6 @@ public class ObjectUI : MonoBehaviour
     }
     public void ToggleVelocityVectorComponent(bool isChecked)
     {
-        print("TOGGLED");
         if (velocityVectorComponent == null)
         {
             velocityVectorComponent = gameObject.AddComponent<velocityVector>();

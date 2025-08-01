@@ -20,7 +20,9 @@ public class AccelerationVector : MonoBehaviour
     public float vectorInitialLength; // Should be set for when it's no longer visible at magnitude 0
     public float vectorMaxMagnitude;
     public float unitScalar; // TODO: Implement dynamic scaling
-    public Material vectorArrowMaterial;
+    public bool disableVectorOnSpawn;
+
+    
 
 
     Vector3 accelerationVector;
@@ -61,9 +63,9 @@ public class AccelerationVector : MonoBehaviour
             unitScalar = 1;
         }
 
-        if (vectorArrowMaterial != null)
+        if(disableVectorOnSpawn)
         {
-            vectorArrow.GetComponent<MeshRenderer>().material = vectorArrowMaterial;
+            vectorArrow.SetActive(false);
         }
 
     }
