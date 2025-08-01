@@ -7,17 +7,17 @@ public class RealmMenu : MonoBehaviour
     public string velocityScene;
     public string displacementScene;
 
-    public void MoveToAcceleScene(string accelerationScene)
+    public void MoveToAcceleScene()
     {
         SceneManager.LoadScene(accelerationScene);
     }
 
-    public void MoveToVeloScene(string velocityScene)
+    public void MoveToVeloScene()
     {
         SceneManager.LoadScene(velocityScene);
     }
 
-    public void MoveToDisScene(string displacementScene)
+    public void MoveToDisScene()
     {
         SceneManager.LoadScene(displacementScene);
     }
