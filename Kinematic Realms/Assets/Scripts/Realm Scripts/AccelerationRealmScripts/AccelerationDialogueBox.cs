@@ -68,6 +68,10 @@ public class AccelerationDialogueBox : MonoBehaviour
     public GameObject mainCamera;
 
 
+    private bool startForce;
+    private float forceAmount;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -478,7 +482,7 @@ public class AccelerationDialogueBox : MonoBehaviour
 
             StartCoroutine(elapseSeconds(2.4f));
             
-            StartCoroutine(ApplyForce(0.3f));
+            StartCoroutine(ApplyForce(4.0f));
         }
         
     }
@@ -495,7 +499,7 @@ public class AccelerationDialogueBox : MonoBehaviour
 
             StartCoroutine(elapseSeconds(2.4f));
 
-            StartCoroutine(ApplyForce(-0.3f));
+            StartCoroutine(ApplyForce(-5.0f));
         }
     }
     void PhysicsEventThree()
@@ -511,7 +515,7 @@ public class AccelerationDialogueBox : MonoBehaviour
 
             StartCoroutine(elapseSeconds(2.4f));
 
-            StartCoroutine(ApplyForce(0.3f));
+            StartCoroutine(ApplyForce(4.0f));
         }
     }
     void PhysicsEventFour()
@@ -526,7 +530,7 @@ public class AccelerationDialogueBox : MonoBehaviour
             
             StartCoroutine(elapseSeconds(2.4f));
            
-            StartCoroutine(ApplyForce(-0.3f));
+            StartCoroutine(ApplyForce(-5.0f));
         }
         
     }
@@ -574,10 +578,12 @@ public class AccelerationDialogueBox : MonoBehaviour
         applyingForce = true;
         while (!secondsElapsed)
         {
-            cubeRigidBody.AddForce(force, 0, 0, ForceMode.Acceleration);
+            startForce = true;
+            forceAmount = force;
             
             yield return null;
         }
+        startForce = false;
         secondsElapsed = false;
         cubeRigidBody.linearVelocity = Vector3.zero;
         applyingForce = false;
@@ -597,10 +603,12 @@ public class AccelerationDialogueBox : MonoBehaviour
         applyingForce = true;
         while (!secondsElapsed)
         {
-            cubeRigidBody.AddForce(force, 0, 0, ForceMode.Acceleration);
+            startForce = true;
+            forceAmount = force;
 
             yield return null;
         }
+        startForce = false;
         secondsElapsed = false;
         cubeRigidBody.linearVelocity = Vector3.zero;
         applyingForce = false;
@@ -635,5 +643,14 @@ public class AccelerationDialogueBox : MonoBehaviour
     {
         accelerationKeyword1.SetActive(false);
         accelerationKeyword2.SetActive(false);
+    }
+
+    private void FixedUpdate()
+    {
+        if (startForce)
+        {
+            cubeRigidBody.AddForce(forceAmount, 0, 0, ForceMode.Acceleration);
+        }
+        
     }
 }
