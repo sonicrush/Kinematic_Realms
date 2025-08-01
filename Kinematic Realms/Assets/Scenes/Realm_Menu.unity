@@ -2213,7 +2213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbb9c7c3a8e6c704bb7c3efe917c7fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accelerationScene: 
+  accelerationScene: AccelerationRealm
   velocityScene: 
   displacementScene: 
 --- !u!114 &1898655333
