@@ -206,7 +206,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1898655332}
         m_TargetAssemblyTypeName: RealmMenu, Assembly-CSharp
         m_MethodName: MoveToAcceleScene
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1413,8 +1413,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1898655332}
         m_TargetAssemblyTypeName: RealmMenu, Assembly-CSharp
-        m_MethodName: MoveToVeloScene
-        m_Mode: 5
+        m_MethodName: MoveToDisScene
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1835,8 +1835,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1898655332}
         m_TargetAssemblyTypeName: RealmMenu, Assembly-CSharp
-        m_MethodName: MoveToDisScene
-        m_Mode: 5
+        m_MethodName: MoveToVeloScene
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
